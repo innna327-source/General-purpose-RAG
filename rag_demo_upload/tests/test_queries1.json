@@ -1,0 +1,42 @@
+[
+  {
+    "query": "RAG 怎么优化",
+    "expected_keywords": ["RAG", "优化", "召回"]
+  },
+  {
+    "query": "向量数据库选哪个",
+    "expected_keywords": ["向量库", "Milvus", "Weaviate"]
+  },
+  {
+    "query": "大模型怎么微调",
+    "expected_keywords": ["微调", "LoRA", "SFT"]
+  },
+  {
+    "query": "Agent 架构怎么设计",
+    "expected_keywords": ["Agent", "架构", "多智能体"]
+  },
+  {
+    "query": "推理怎么加速",
+    "expected_keywords": ["推理", "量化", "蒸馏"]
+  },
+  {
+    "query": "记忆功能怎么实现",
+    "expected_keywords": ["记忆", "LangChain", "长期"]
+  },
+  {
+    "query": "Function Calling 怎么训练",
+    "expected_keywords": ["函数调用", "训练", "SFT"]
+  },
+  {
+    "query": "文本怎么分块",
+    "expected_keywords": ["分块", "切割", "语义"]
+  },
+  {
+    "query": "GraphRAG 核心机制",
+    "expected_keywords": ["图谱", "RAG", "实体"]
+  },
+  {
+    "query": "MCP 和函数调用区别",
+    "expected_keywords": ["MCP", "协议", "Function"]
+  }
+]
