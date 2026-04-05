@@ -130,6 +130,147 @@
   ```
 
   支持 SiliconFlow、DeepSeek、本地 Ollama 等任意 OpenAI 兼容接口。
+# MCP 服务使用说明
+
+  本项目的检索能力通过 MCP 协议封装成 HTTP 服务对外暴露，任何能发 HTTP 请求的客户端都可以接入。
+
+  ---
+
+  ## 启动服务
+
+  **第一步：建索引**
+
+  把 PDF 文件放到 `data/raw_pdf/` 目录下，运行：
+
+  ```bash
+  python main.py --mode test --file 你的文件.pdf
+  ```
+
+  终端会输出类似 `file_hash=d1257ca2ac08...` 的字样，复制这个 hash 值备用。
+
+  **第二步：启动 MCP 服务**
+
+  ```bash
+  python main.py --mode mcp --index-hash 你的hash值
+  ```
+
+  服务默认运行在 `http://0.0.0.0:8080`，端口可在 `config/settings.py` 里修改。
+
+  ---
+
+  ## 接口说明
+
+  ### 健康检查
+
+  ```
+  GET /health
+  ```
+
+  返回：
+  ```json
+  { "status": "ok" }
+  ```
+
+  ### 查询
+
+  ```
+  POST /v1/completions
+  Content-Type: application/json
+  ```
+
+  请求体：
+
+  | 字段 | 类型 | 必填 | 说明 |
+  |---|---|---|---|
+  | query | string | 是 | 你想问的问题 |
+  | top_k | int | 否 | 召回的段落数，默认 5 |
+  | max_tokens | int | 否 | 上下文最大字符数，默认 600，上限 1000 |
+
+  示例请求：
+  ```json
+  {
+    "query": "合同的违约条款是什么",
+    "top_k": 5,
+    "max_tokens": 600
+  }
+  ```
+
+  返回：
+  ```json
+  {
+    "id": "mcp-rag-1234567890",
+    "object": "text_completion",
+    "choices": [
+      {
+        "index": 0,
+        "text": "大模型生成的回答内容",
+        "context": ["chunk_id_1", "chunk_id_2"]
+      }
+    ]
+  }
+  ```
+
+  ### 服务信息
+
+  ```
+  GET /v1/models
+  ```
+
+  返回当前服务的协议版本、能力列表等元信息。
+
+  ---
+
+  ## 客户端接入示例
+
+  **Python 脚本**
+
+  ```python
+  import requests
+
+  resp = requests.post(
+      "http://localhost:8080/v1/completions",
+      json={"query": "合同的违约条款是什么"}
+  )
+  print(resp.json()["choices"][0]["text"])
+  ```
+
+  **curl**
+
+  ```bash
+  curl -X POST http://localhost:8080/v1/completions \
+    -H "Content-Type: application/json" \
+    -d '{"query": "合同的违约条款是什么"}'
+  ```
+
+  **Claude Desktop**
+
+  在 Claude Desktop 配置文件中添加：
+
+  ```json
+  {
+    "mcpServers": {
+      "my-rag": {
+        "url": "http://localhost:8080"
+      }
+    }
+  }
+  ```
+
+  配置后 Claude 对话时可直接调用本服务进行文档检索。
+
+  **局域网内其他设备**
+
+  将 `localhost` 替换为本机局域网 IP 即可，例如：
+
+  ```
+  http://192.168.1.100:8080/v1/completions
+  ```
+
+  ---
+
+  ## 限流说明
+
+  服务内置 5 QPS 限流，超出后返回 HTTP 429。当前为单线程模式，适合个人使用或小规模调用。
 
   ---
 
