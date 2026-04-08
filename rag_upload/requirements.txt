@@ -1,0 +1,10 @@
+sentence-transformers==2.7.0
+transformers==4.36.2
+rank-bm25==0.2.2
+jieba==0.42.1
+spacy==3.7.2
+pymupdf==1.23.5
+pytesseract==0.3.10
+pillow>=10.0.0
+flask==2.3.3
+openai>=1.0.0
