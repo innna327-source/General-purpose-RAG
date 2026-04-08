@@ -31,19 +31,7 @@ def _safe_load_graph(path: Path) -> tuple[Dict[str, List[str]], bool]:
 
 @dataclass
 class HybridRetriever:
-    """
-    BM25 + 向量双路混合检索器。
-
-    synonym_dict：领域同义词表，用于 BM25 查询扩展。
-                  格式：{"规范词": ["同义词1", "同义词2"]}
-                  默认为空（不扩展），由调用方按领域注入：
-                    - 医疗：{"高血压": ["血压升高"], ...}
-                    - 金融：{"净利润": ["归母净利润", "净利"], ...}
-                    - 法律：{"违约": ["违反合同", "不履行"], ...}
-                  也可从外部 JSON 文件加载后传入，避免硬编码。
-    bm25_weight / vector_weight：融合权重，默认 0.7/0.3（BM25 偏重精确匹配）。
-                  专业术语密集的领域（金融、法律）可适当调高 bm25_weight。
-    """
+    """BM25 + 向量双路混合检索器，支持同义词扩展和语义图谱辅助召回。"""
 
     file_hash: str
     bm25: BM25Index

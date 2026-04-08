@@ -28,10 +28,6 @@ from utils.paths import ensure_runtime_dirs
 
 
 def _get_loader(file_path: Path) -> BaseLoader:
-    """
-    Loader 工厂：根据文件扩展名返回对应的 Loader 实例。
-    新增文件类型只需在此处注册，main 流程不感知具体实现。
-    """
     suffix = file_path.suffix.lower()
     if suffix == ".pdf":
         return PDFLoader()
@@ -298,7 +294,6 @@ if __name__ == "__main__":
     try:
         sys.exit(main())
     except Exception as e:
-        # 顶层捕获：记录 error 日志，退出码 1
         logger.error(str(e))
         sys.exit(1)
 

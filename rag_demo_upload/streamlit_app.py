@@ -1,23 +1,16 @@
-"""
-Streamlit前端应用 - RAG系统数据展示
-展示数据处理大盘、检索质量跑分看板、召回链路透视表和分数对比柱状图
-"""
 import streamlit as st
 import json
 import pandas as pd
-import plotly.express as px
 import plotly.graph_objects as go
 from pathlib import Path
 
-# 页面配置
 st.set_page_config(
-    page_title="RAG系统数据展示",
+    page_title="RAG Demo",
     page_icon="📊",
     layout="wide"
 )
 
-# 标题
-st.title("📊 RAG系统数据展示大盘")
+st.title("RAG Demo")
 st.markdown("---")
 
 # 数据加载函数
@@ -63,9 +56,7 @@ test_report = load_test_report()
 test_queries = load_test_queries()
 
 # ==================== 1. 数据处理大盘 ====================
-st.header("📦 数据处理大盘 (Data Processing Dashboard)")
-st.markdown("**展示内容：** 使用大号数字卡片展示文档的分块统计信息（总父块数、总子块数、平均长度）")
-st.markdown('**作用：** 让用户直观看到"一篇PDF到底被切成了多少块"')
+st.header("数据处理统计")
 
 if chunks_data:
     # 计算统计信息
@@ -103,9 +94,7 @@ else:
 st.markdown("---")
 
 # ==================== 2. 检索质量跑分看板 ====================
-st.header("🎯 检索质量跑分看板 (Evaluation Metrics)")
-st.markdown("**展示内容：** 展示 test_report.json 中的 recall_at_5 和 mrr 核心指标")
-st.markdown("**作用：** 证明你的检索算法是有效且高质量的")
+st.header("检索质量评估")
 
 if test_report:
     col1, col2, col3 = st.columns(3)
@@ -129,16 +118,15 @@ if test_report:
     with col3:
         mrr_value = test_report['mrr']
         st.metric(
-            label="MRR (平均倒数排名)",
+            label="MRR",
             value=f"{mrr_value:.3f}",
             delta=f"{mrr_value - 0.5:.3f}" if mrr_value > 0.5 else None,
-            help="衡量相关结果排名的平均质量"
+            help="Mean Reciprocal Rank"
         )
-        
-    # 如果有通过率数据，显示通过率
+
     if 'pass_rate' in test_report:
         st.markdown("---")
-        st.subheader("🎯 召回准确率 (基于关键词匹配)")
+        st.subheader("关键词召回率")
         
         col_pr1, col_pr2, col_pr3 = st.columns(3)
         with col_pr1:
@@ -159,8 +147,7 @@ if test_report:
                 help="Top 5 结果中包含预期关键词的查询比例"
             )
     
-    # 详细结果表格
-    st.subheader("📋 查询详细结果")
+    st.subheader("查询详细结果")
     details_df = pd.DataFrame(test_report['details'])
     details_df['命中排名'] = details_df['hit_rank'].apply(lambda x: f"第{x}名" if x > 0 else "未命中")
     details_df['倒数排名'] = details_df['reciprocal_rank'].apply(lambda x: f"{x:.3f}")
@@ -190,11 +177,8 @@ else:
 st.markdown("---")
 
 # ==================== 3. 召回链路透视表 ====================
-st.header("🔍 召回链路透视表 (Retrieval Pipeline Table)")
-st.markdown("**展示内容：** 展示 hybrid_retrieve 返回的调试数据，用一个交互式表格列出 Top 候选分块")
-st.markdown("**表格列名：** Chunk ID、文本片段、BM25原始分、向量原始分、BM25归一化分、向量归一化分、最终融合分")
-st.markdown("**作用：** 这是白盒最核心的部分，清晰展示到底是哪个算法把这条数据捞上来的")
-st.info("💡 **归一化分**：当前检索结果内的相对分数，1 代表本次召回中相关性最高")
+st.header("召回链路")
+st.info("归一化分：当前批次内的相对得分，1.0 表示本次召回中最相关的结果")
 
 # 真实检索结果
 @st.cache_resource
@@ -245,26 +229,19 @@ def cached_llm_answer(query: str, context_text: str) -> str:
     )
 
 if test_report and test_queries:
-    st.subheader("🔎 选择查询进行检索演示")
-
-    # 选择查询
     query_options = [q['query'] for q in test_queries]
-    selected_query = st.selectbox("选择一个查询：", query_options)
+    selected_query = st.selectbox("选择查询：", query_options)
 
     retriever = get_retriever()
 
     if retriever:
-        # 调用真实检索
         results, debug_info = retriever.hybrid_retrieve(selected_query, top_k=5, return_debug_info=True)
-        
+
         if results and debug_info:
-            # 提取 debug_info 中 top_k 的数据
             top_chunk_ids = [r['chunk_id'] for r in results]
             top_debug_info = [d for d in debug_info if d['chunk_id'] in top_chunk_ids]
-            # 按照 results 的顺序排序 debug_info
             top_debug_info.sort(key=lambda x: top_chunk_ids.index(x['chunk_id']))
-            
-            # 创建真实数据表格
+
             real_results = []
             for r, d in zip(results, top_debug_info):
                 real_results.append({
@@ -287,11 +264,10 @@ if test_report and test_queries:
             styled_df = results_df.style.apply(highlight_max, subset=['BM25原始分', '向量原始分', 'BM25归一化分', '向量归一化分', '最终融合分'])
             st.dataframe(styled_df, use_container_width=True, height=250)
 
-            # ==================== LLM 生成答案 ====================
             st.markdown("---")
-            st.subheader("🤖 LLM 生成答案")
+            st.subheader("LLM 生成答案")
             context_text = "\n\n---\n\n".join([r["text"] for r in results])
-            with st.spinner("正在调用 LLM 生成答案…"):
+            with st.spinner("正在生成答案…"):
                 try:
                     answer = cached_llm_answer(selected_query, context_text)
                     st.info(answer)
@@ -301,11 +277,8 @@ if test_report and test_queries:
             st.markdown("---")
 
             # ==================== 4. 分数对比柱状图 ====================
-            st.header("📊 分数对比柱状图 (Score Comparison Chart)")
-            st.markdown("**展示内容：** 用双柱状图（或堆叠图）展示 Top 5 结果的 norm_bm25 和 norm_vector")
-            st.markdown("**作用：** 图形化展示关键词匹配和语义匹配在最终得分里的占比情况")
+            st.header("BM25 vs 向量分数对比")
 
-            # 创建真实的分数对比数据
             comparison_data = {
                 'Chunk': [f"Top {i+1} ({d['chunk_id'][:8]}...)" for i, d in enumerate(top_debug_info)],
                 'BM25分数': [round(d['norm_bm25'], 4) for d in top_debug_info],
@@ -316,77 +289,47 @@ if test_report and test_queries:
     else:
         st.warning("无法初始化检索器，请确保索引已构建。")
     
-    # 创建分组柱状图
     fig = go.Figure(data=[
-        go.Bar(name='BM25分数', x=df_comparison['Chunk'], y=df_comparison['BM25分数'], 
+        go.Bar(name='BM25分数', x=df_comparison['Chunk'], y=df_comparison['BM25分数'],
                marker_color='#FF6B6B', text=df_comparison['BM25分数'], textposition='auto'),
-        go.Bar(name='向量分数', x=df_comparison['Chunk'], y=df_comparison['向量分数'], 
+        go.Bar(name='向量分数', x=df_comparison['Chunk'], y=df_comparison['向量分数'],
                marker_color='#4ECDC4', text=df_comparison['向量分数'], textposition='auto')
     ])
-    
     fig.update_layout(
-        title='Top 5 检索结果的BM25与向量分数对比',
         xaxis_title='排名',
         yaxis_title='归一化分数',
         barmode='group',
         height=400,
         hovermode='x unified'
     )
-    
     st.plotly_chart(fig, use_container_width=True)
-    
-    # 添加堆叠图选项
-    st.subheader("📈 堆叠视图")
+
+    st.subheader("堆叠视图")
     fig_stacked = go.Figure(data=[
-        go.Bar(name='BM25分数', x=df_comparison['Chunk'], y=df_comparison['BM25分数'], 
+        go.Bar(name='BM25分数', x=df_comparison['Chunk'], y=df_comparison['BM25分数'],
                marker_color='#FF6B6B'),
-        go.Bar(name='向量分数', x=df_comparison['Chunk'], y=df_comparison['向量分数'], 
+        go.Bar(name='向量分数', x=df_comparison['Chunk'], y=df_comparison['向量分数'],
                marker_color='#4ECDC4')
     ])
-    
     fig_stacked.update_layout(
-        title='分数堆叠视图',
         xaxis_title='排名',
         yaxis_title='累计分数',
         barmode='stack',
         height=400
     )
-    
     st.plotly_chart(fig_stacked, use_container_width=True)
-
-st.markdown("---")
-
-# ==================== 页脚信息 ====================
-st.markdown("### 💡 系统说明")
-st.info("""
-**数据来源：**
-- 分块数据：`index/*.chunks.jsonl`
-- 评估报告：`output/test_report.json`
-- 测试查询：`tests/test_queries.json`
-
-**功能特点：**
-- ✅ 实时展示文档处理统计
-- ✅ 检索质量评估指标
-- ✅ 召回链路透明化展示
-- ✅ 多维度分数对比可视化
-""")
 
 # 侧边栏
 with st.sidebar:
-    st.header("⚙️ 系统配置")
-    st.markdown("**当前数据集：**")
+    st.header("数据集")
     st.code("demo.pdf")
-    
-    st.markdown("**统计信息：**")
     if chunks_data:
-        st.write(f"- 文档块数：{len(chunks_data)}")
+        st.write(f"文档块数：{len(chunks_data)}")
     if test_report:
-        st.write(f"- 测试查询：{test_report['total_queries']} 条")
-        st.write(f"- Recall@5：{test_report['recall_at_5']:.1%}")
-        st.write(f"- MRR：{test_report['mrr']:.3f}")
-    
+        st.write(f"测试查询：{test_report['total_queries']} 条")
+        st.write(f"Recall@5：{test_report['recall_at_5']:.1%}")
+        st.write(f"MRR：{test_report['mrr']:.3f}")
     st.markdown("---")
-    st.markdown("**🔄 刷新数据**")
     if st.button("重新加载数据"):
         st.cache_data.clear()
         st.rerun()

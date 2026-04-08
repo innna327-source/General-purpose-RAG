@@ -9,20 +9,14 @@ from pydantic import BaseModel
 
 
 class RAGQueryRequest(BaseModel):
-    """前端发来的提问请求"""
-
     question: str
 
 
 class SimpleContextItem(BaseModel):
-    """简化后的上下文信息（给前端展示用）"""
-
     id: str
 
 
 class SimpleRAGResponse(BaseModel):
-    """后端返回给前端的友好结构，避免一堆难懂缩写"""
-
     ok: bool
     answer: str
     explanation: str
@@ -38,7 +32,6 @@ app = FastAPI(title="RAG Demo API", version="1.0.0")
 
 
 def log_line(message: str) -> None:
-    """简单写日志到 logs/service.log，方便用户排查"""
     os.makedirs(os.path.dirname(LOG_PATH), exist_ok=True)
     ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     with open(LOG_PATH, "a", encoding="utf-8") as f:
@@ -46,12 +39,6 @@ def log_line(message: str) -> None:
 
 
 async def call_mcp_rag(question: str) -> Dict[str, Any]:
-    """
-    调用已有的 MCP/RAG HTTP 服务。
-
-    默认从环境变量 MCP_RAG_URL 读取地址，否则用 DEFAULT_MCP_URL。
-    这里假设返回结构类似用户给出的 JSON 示例。
-    """
     url = os.getenv("MCP_RAG_URL", DEFAULT_MCP_URL)
     payload = {"query": question}
 
@@ -76,12 +63,6 @@ async def call_mcp_rag(question: str) -> Dict[str, Any]:
 
 
 def simplify_mcp_response(raw: Dict[str, Any]) -> SimpleRAGResponse:
-    """
-    将复杂的 JSON（带 choices/context 等）转换成前端友好的结构：
-    - answer: 直接展示给用户的回复文字
-    - explanation: 用自然语言说明“我做了什么”
-    - related_*: 相关内容数量/ID 列表，方便前端画图
-    """
     choices: Optional[List[Dict[str, Any]]] = raw.get("choices")
     if not choices:
         return SimpleRAGResponse(
@@ -97,13 +78,9 @@ def simplify_mcp_response(raw: Dict[str, Any]) -> SimpleRAGResponse:
     text = first.get("text") or ""
     context_ids: List[str] = first.get("context") or []
 
-    # 这里不做复杂 NLP，只是做一点点清洗，让文本更易读
     cleaned_text = text.replace("\\n", "\n").strip()
 
-    explanation = (
-        "下面是根据知识库为你整理出的回答，我参考了多条相关内容，并尽量用通俗的语言说明。"
-        "如果你觉得不准确，可以在问题里补充更多背景信息。"
-    )
+    explanation = f"基于 {len(context_ids)} 条相关内容生成的回答。"
 
     related_items = [SimpleContextItem(id=str(cid)) for cid in context_ids]
 
@@ -119,11 +96,6 @@ def simplify_mcp_response(raw: Dict[str, Any]) -> SimpleRAGResponse:
 
 @app.post("/api/rag/query", response_model=SimpleRAGResponse)
 async def rag_query(req: RAGQueryRequest) -> SimpleRAGResponse:
-    """
-    前端唯一需要调用的 RAG 接口：
-    - 入参：自然语言问题
-    - 出参：结构化、易懂的答案 + 相关条目数量（方便画图）
-    """
     question = req.question.strip()
     if not question:
         raise HTTPException(status_code=400, detail="问题不能为空。")
@@ -143,6 +115,5 @@ async def rag_query(req: RAGQueryRequest) -> SimpleRAGResponse:
 
 @app.get("/health")
 async def health() -> Dict[str, str]:
-    """健康检查，前端或监控可用"""
     return {"status": "ok"}
 

@@ -22,12 +22,9 @@
 第 4 步  启动前端          python -m streamlit run streamlit_app.py   ← LLM 在这里调用
 ```
 
-> **LLM 在哪一步调用，问题从哪里来？**
-> 在第 4 步（Streamlit 运行期间）。前端下拉框里选一条测试 query → 自动做混合检索 → 把检索到的段落 + 这条 query 一起发给 LLM → 在页面上显示生成答案。
-> 问题直接来自 `tests/test_queries.json`，不需要另外输入。第 2、3 步（构建索引 / 批量评估）**不调用 LLM**。
->
-> **MCP 服务是否必要？**
-> 对于 Streamlit Demo 不需要。MCP 服务仅当你需要把 RAG 能力作为 HTTP API 提供给外部系统时才启动。
+> LLM 在第 4 步调用：前端选一条测试 query → 混合检索 → 检索到的段落 + query 一起发给 LLM → 页面展示生成答案。
+> 问题来自 `tests/test_queries.json`，第 2、3 步不调用 LLM。
+> MCP 服务仅在需要将 RAG 能力作为 HTTP API 对外提供时才需要启动，Streamlit Demo 不依赖它。
 
 ---
 

@@ -19,21 +19,13 @@ def normalize_for_match(text: str) -> str:
 
 
 _DEFAULT_CHAR_PATTERN = re.compile(
-    r"[^\x09\x0A\x0D\x20-\x7E"   # ASCII 可打印字符 + 基本控制符
+    r"[^\x09\x0A\x0D\x20-\x7E"   # ASCII 可打印字符
     r"\u4e00-\u9fff"               # CJK 基本汉字
-    r"\u3400-\u4dbf"               # CJK 扩展 A（繁体/生僻字）
-    r"\uff00-\uffef"               # 全角符号（含货币、数学）
+    r"\u3400-\u4dbf"               # CJK 扩展 A
+    r"\uff00-\uffef"               # 全角符号
     r"\u2000-\u206f"               # 常用标点
     r"]"
 )
-"""
-默认字符过滤正则：覆盖中英文 + 繁体 + 全角符号。
-原版只保留 CJK 基本区（\u4e00-\u9fff），会误删：
-  - 繁体字（法律/金融文书常见）
-  - 全角货币符号 ￥€£
-  - 数学/特殊标点
-如需支持日文/韩文，在调用 clean_to_paragraphs 时传入自定义 extra_char_ranges。
-"""
 
 
 def _clean_basic(text: str, char_pattern: re.Pattern = _DEFAULT_CHAR_PATTERN) -> str:

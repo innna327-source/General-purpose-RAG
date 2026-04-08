@@ -9,10 +9,7 @@ from chunk.base_chunker import BaseChunker, ChunkResult
 from utils.hash_utils import sha256_text
 
 
-# ---------------------------------------------------------------------------
-# 默认标题正则：通用中文文档结构
-# 金融报告、法律文书等可在构造时传入自己的 title_patterns 覆盖
-# ---------------------------------------------------------------------------
+# 默认标题正则，覆盖通用中文章节结构，可在构造时传入自定义模式覆盖
 _DEFAULT_TITLE_PATTERNS: List[re.Pattern] = [
     re.compile(r"^\s*#"),
     re.compile(r"^\s*第\s*[一二三四五六七八九十0-9]+\s*[章节部分条款]\s*"),
@@ -29,14 +26,7 @@ def _decode_ids(tokenizer, ids: List[int]) -> str:
 
 
 class HierarchicalChunker(BaseChunker):
-    """
-    基于父子层级的滑动窗口分块器。
-
-    title_patterns：识别"父块边界"的正则列表，默认覆盖通用中文章节结构。
-                    金融场景可传入季报/年报结构；法律场景可传入条款结构。
-    tokenizer_model_name：用于精确 token 计数，加载失败自动 fallback 到字符计数。
-    chunk_size / overlap：以 token 数计的窗口大小和重叠量。
-    """
+    """基于父子层级的滑动窗口分块器，tokenizer 加载失败时自动降级为字符计数。"""
 
     def __init__(
         self,
@@ -143,9 +133,6 @@ class HierarchicalChunker(BaseChunker):
         return chunks, parent_child_map
 
 
-# ---------------------------------------------------------------------------
-# 向后兼容的函数式入口（保留给 main.py 的旧调用，内部委托给 HierarchicalChunker）
-# ---------------------------------------------------------------------------
 
 def build_hierarchical_chunks(
     paragraphs: List[str],
