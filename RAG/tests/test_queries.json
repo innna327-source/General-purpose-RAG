@@ -1,0 +1,2544 @@
+[
+  {
+    "query": "RAG和微调到底选哪个好？",
+    "expected_keywords": [
+      "fine-tuning",
+      "指令微调",
+      "全量微调",
+      "微调",
+      "RAG",
+      "prompt tuning",
+      "rag",
+      "和微调到底选哪个好",
+      "检索",
+      "lora",
+      "检索增强",
+      "sft",
+      "finetune",
+      "retrieval augmented generation"
+    ]
+  },
+  {
+    "query": "如果我的知识库经常更新，是用RAG还是微调？",
+    "expected_keywords": [
+      "还是微调",
+      "fine-tuning",
+      "全量微调",
+      "微调",
+      "retrieval augmented generation",
+      "RAG",
+      "如果我的知识库经常更新",
+      "prompt tuning",
+      "rag",
+      "lora",
+      "检索",
+      "指令微调",
+      "检索增强",
+      "sft",
+      "finetune",
+      "是用"
+    ]
+  },
+  {
+    "query": "微调的初始成本是不是比RAG高很多？",
+    "expected_keywords": [
+      "fine-tuning",
+      "全量微调",
+      "微调",
+      "retrieval augmented generation",
+      "prompt tuning",
+      "RAG",
+      "lora",
+      "微调的初始成本是不是比",
+      "检索",
+      "指令微调",
+      "检索增强",
+      "sft",
+      "rag",
+      "高很多",
+      "finetune"
+    ]
+  },
+  {
+    "query": "为了减少大模型幻觉，RAG和微调哪个更靠谱？",
+    "expected_keywords": [
+      "模型",
+      "为了减少大模型幻觉",
+      "指令微调",
+      "sft",
+      "RAG",
+      "和微调哪个更靠谱",
+      "lora",
+      "胡说八道",
+      "openai",
+      "fine-tuning",
+      "全量微调",
+      "prompt tuning",
+      "rag",
+      "检索",
+      "检索增强",
+      "retrieval augmented generation",
+      "finetune",
+      "llm",
+      "幻觉",
+      "大模型",
+      "deepseek",
+      "微调",
+      "hallucination",
+      "瞎编"
+    ]
+  },
+  {
+    "query": "能讲讲RAG和微调在响应速度上的区别吗？",
+    "expected_keywords": [
+      "fine-tuning",
+      "和微调在响应速度上的区别吗",
+      "全量微调",
+      "微调",
+      "RAG",
+      "prompt tuning",
+      "rag",
+      "lora",
+      "检索",
+      "指令微调",
+      "检索增强",
+      "sft",
+      "能讲讲",
+      "finetune",
+      "retrieval augmented generation"
+    ]
+  },
+  {
+    "query": "企业内部的动态知识问答，推荐用RAG还是微调技术？",
+    "expected_keywords": [
+      "fine-tuning",
+      "指令微调",
+      "企业内部的动态知识问答",
+      "微调",
+      "全量微调",
+      "RAG",
+      "prompt tuning",
+      "还是微调技术",
+      "rag",
+      "推荐用",
+      "检索",
+      "lora",
+      "检索增强",
+      "sft",
+      "finetune",
+      "retrieval augmented generation"
+    ]
+  },
+  {
+    "query": "特定风格的文本生成，是不是微调效果更好？",
+    "expected_keywords": [
+      "fine-tuning",
+      "特定风格的文本生成",
+      "微调",
+      "全量微调",
+      "是不是微调效果更好",
+      "prompt tuning",
+      "lora",
+      "指令微调",
+      "sft",
+      "finetune"
+    ]
+  },
+  {
+    "query": "RAG的维护难度大吗，相比微调而言？",
+    "expected_keywords": [
+      "fine-tuning",
+      "相比微调而言",
+      "全量微调",
+      "微调",
+      "RAG",
+      "prompt tuning",
+      "rag",
+      "lora",
+      "检索",
+      "指令微调",
+      "检索增强",
+      "sft",
+      "的维护难度大吗",
+      "finetune",
+      "retrieval augmented generation"
+    ]
+  },
+  {
+    "query": "先微调打底再用RAG补充实时知识，这种进阶方案可行吗？",
+    "expected_keywords": [
+      "补充实时知识",
+      "先微调打底再用",
+      "fine-tuning",
+      "全量微调",
+      "微调",
+      "retrieval augmented generation",
+      "prompt tuning",
+      "RAG",
+      "lora",
+      "rag",
+      "检索",
+      "指令微调",
+      "检索增强",
+      "sft",
+      "finetune",
+      "这种进阶方案可行吗"
+    ]
+  },
+  {
+    "query": "成本有限的情况下，搞医疗问答系统选RAG还是微调？",
+    "expected_keywords": [
+      "还是微调",
+      "fine-tuning",
+      "指令微调",
+      "全量微调",
+      "微调",
+      "RAG",
+      "prompt tuning",
+      "搞医疗问答系统选",
+      "rag",
+      "检索",
+      "lora",
+      "检索增强",
+      "sft",
+      "finetune",
+      "retrieval augmented generation",
+      "成本有限的情况下"
+    ]
+  },
+  {
+    "query": "到底该怎么选，微调还是RAG？",
+    "expected_keywords": [
+      "fine-tuning",
+      "到底该怎么选",
+      "全量微调",
+      "微调",
+      "retrieval augmented generation",
+      "prompt tuning",
+      "RAG",
+      "lora",
+      "rag",
+      "检索",
+      "指令微调",
+      "检索增强",
+      "sft",
+      "finetune",
+      "微调还是"
+    ]
+  },
+  {
+    "query": "知识库老是变，用微调是不是不太行？",
+    "expected_keywords": [
+      "fine-tuning",
+      "用微调是不是不太行",
+      "微调",
+      "全量微调",
+      "prompt tuning",
+      "lora",
+      "指令微调",
+      "sft",
+      "finetune",
+      "知识库老是变"
+    ]
+  },
+  {
+    "query": "搞个医疗大模型，是把文档存向量库好，还是直接拿去训练好？",
+    "expected_keywords": [
+      "chroma",
+      "大模型",
+      "deepseek",
+      "模型",
+      "vector database",
+      "还是直接拿去训练好",
+      "向量",
+      "搞个医疗大模型",
+      "weaviate",
+      "是把文档存向量库好",
+      "openai",
+      "向量数据库",
+      "llm",
+      "qdrant",
+      "milvus"
+    ]
+  },
+  {
+    "query": "RAGAS框架是怎么评估RAG系统的？",
+    "expected_keywords": [
+      "指标",
+      "RAGAS",
+      "评测",
+      "框架是怎么评估",
+      "recall",
+      "RAG",
+      "retrieval augmented generation",
+      "ragas",
+      "rag",
+      "检索",
+      "忠诚度",
+      "检索增强",
+      "评估",
+      "系统的",
+      "相关性",
+      "mrr"
+    ]
+  },
+  {
+    "query": "评估RAG生成答案的忠诚度，具体是怎么计算的？",
+    "expected_keywords": [
+      "指标",
+      "评测",
+      "生成答案的忠诚度",
+      "recall",
+      "RAG",
+      "retrieval augmented generation",
+      "ragas",
+      "具体是怎么计算的",
+      "rag",
+      "检索",
+      "忠诚度",
+      "检索增强",
+      "评估",
+      "相关性",
+      "mrr"
+    ]
+  },
+  {
+    "query": "不需要参考答案就能评估RAG，RAGAS是怎么做到的？",
+    "expected_keywords": [
+      "指标",
+      "RAGAS",
+      "是怎么做到的",
+      "评测",
+      "不需要参考答案就能评估",
+      "recall",
+      "RAG",
+      "ragas",
+      "retrieval augmented generation",
+      "rag",
+      "检索",
+      "忠诚度",
+      "检索增强",
+      "评估",
+      "相关性",
+      "mrr"
+    ]
+  },
+  {
+    "query": "答案相关性在RAG评估里是怎么衡量的？",
+    "expected_keywords": [
+      "指标",
+      "评估里是怎么衡量的",
+      "评测",
+      "recall",
+      "RAG",
+      "retrieval augmented generation",
+      "ragas",
+      "rag",
+      "检索",
+      "忠诚度",
+      "检索增强",
+      "评估",
+      "答案相关性在",
+      "相关性",
+      "mrr"
+    ]
+  },
+  {
+    "query": "怎么判断召回的文本和用户问题到底相不相关？",
+    "expected_keywords": [
+      "召回",
+      "混合检索",
+      "向量检索",
+      "recall",
+      "重排序",
+      "rerank",
+      "bm25",
+      "检索",
+      "怎么判断召回的文本和用户问题到底相不相关",
+      "关键词检索"
+    ]
+  },
+  {
+    "query": "RAG评估里的上下文相关性是什么意思？",
+    "expected_keywords": [
+      "评估里的上下文相关性是什么意思",
+      "忠诚度",
+      "评测",
+      "recall",
+      "RAG",
+      "相关性",
+      "长期记忆",
+      "短期记忆",
+      "kv cache",
+      "ragas",
+      "rag",
+      "检索",
+      "检索增强",
+      "评估",
+      "记忆",
+      "retrieval augmented generation",
+      "指标",
+      "上下文",
+      "memory",
+      "mrr"
+    ]
+  },
+  {
+    "query": "能举个例子说明下RAGAS评估忠诚度的过程吗？",
+    "expected_keywords": [
+      "指标",
+      "RAGAS",
+      "能举个例子说明下",
+      "评测",
+      "评估忠诚度的过程吗",
+      "recall",
+      "retrieval augmented generation",
+      "ragas",
+      "rag",
+      "检索",
+      "忠诚度",
+      "检索增强",
+      "评估",
+      "相关性",
+      "mrr"
+    ]
+  },
+  {
+    "query": "大模型生成的答案如果不是基于召回文本，是不是忠诚度就很低？",
+    "expected_keywords": [
+      "模型",
+      "重排序",
+      "忠诚度",
+      "评测",
+      "recall",
+      "相关性",
+      "openai",
+      "召回",
+      "混合检索",
+      "是不是忠诚度就很低",
+      "向量检索",
+      "大模型生成的答案如果不是基于召回文本",
+      "rerank",
+      "ragas",
+      "检索",
+      "评估",
+      "llm",
+      "指标",
+      "大模型",
+      "deepseek",
+      "bm25",
+      "关键词检索",
+      "mrr"
+    ]
+  },
+  {
+    "query": "假问题在计算答案相关性时起到了什么作用？",
+    "expected_keywords": [
+      "指标",
+      "评测",
+      "recall",
+      "ragas",
+      "忠诚度",
+      "评估",
+      "假问题在计算答案相关性时起到了什么作用",
+      "相关性",
+      "mrr"
+    ]
+  },
+  {
+    "query": "RAG系统评估主要看哪几个核心指标？",
+    "expected_keywords": [
+      "系统评估主要看哪几个核心指标",
+      "指标",
+      "评测",
+      "相关性",
+      "recall",
+      "RAG",
+      "ragas",
+      "rag",
+      "检索",
+      "忠诚度",
+      "检索增强",
+      "评估",
+      "retrieval augmented generation",
+      "mrr"
+    ]
+  },
+  {
+    "query": "怎么知道RAG回答得准不准？",
+    "expected_keywords": [
+      "怎么知道",
+      "RAG",
+      "回答得准不准",
+      "rag",
+      "检索",
+      "检索增强",
+      "retrieval augmented generation"
+    ]
+  },
+  {
+    "query": "那个叫RAGAS的评估方法，不用标准答案怎么评？",
+    "expected_keywords": [
+      "那个叫",
+      "RAGAS",
+      "指标",
+      "评测",
+      "的评估方法",
+      "recall",
+      "retrieval augmented generation",
+      "不用标准答案怎么评",
+      "ragas",
+      "rag",
+      "检索",
+      "忠诚度",
+      "检索增强",
+      "评估",
+      "相关性",
+      "mrr"
+    ]
+  },
+  {
+    "query": "忠诚度评分是怎么算出来的，在RAG里？",
+    "expected_keywords": [
+      "指标",
+      "评测",
+      "recall",
+      "忠诚度评分是怎么算出来的",
+      "RAG",
+      "ragas",
+      "retrieval augmented generation",
+      "rag",
+      "检索",
+      "忠诚度",
+      "检索增强",
+      "评估",
+      "相关性",
+      "mrr"
+    ]
+  },
+  {
+    "query": "Milvus和Weaviate这两个向量数据库哪个更好用？",
+    "expected_keywords": [
+      "chroma",
+      "Milvus",
+      "这两个向量数据库哪个更好用",
+      "向量",
+      "weaviate",
+      "Weaviate",
+      "向量数据库",
+      "vector database",
+      "qdrant",
+      "milvus"
+    ]
+  },
+  {
+    "query": "高并发场景下，向量数据库选Milvus还是Weaviate？",
+    "expected_keywords": [
+      "高并发场景下",
+      "chroma",
+      "Milvus",
+      "向量",
+      "向量数据库选",
+      "还是",
+      "weaviate",
+      "Weaviate",
+      "向量数据库",
+      "vector database",
+      "qdrant",
+      "milvus"
+    ]
+  },
+  {
+    "query": "Chroma适合大规模的生产环境吗？",
+    "expected_keywords": [
+      "chroma",
+      "Chroma",
+      "适合大规模的生产环境吗",
+      "向量",
+      "weaviate",
+      "向量数据库",
+      "vector database",
+      "qdrant",
+      "milvus"
+    ]
+  },
+  {
+    "query": "Qdrant这个向量数据库有什么优缺点？",
+    "expected_keywords": [
+      "chroma",
+      "Qdrant",
+      "这个向量数据库有什么优缺点",
+      "向量",
+      "weaviate",
+      "向量数据库",
+      "vector database",
+      "qdrant",
+      "milvus"
+    ]
+  },
+  {
+    "query": "国内云厂商托管的话，推荐用哪个向量数据库？",
+    "expected_keywords": [
+      "国内云厂商托管的话",
+      "chroma",
+      "向量",
+      "推荐用哪个向量数据库",
+      "weaviate",
+      "向量数据库",
+      "vector database",
+      "qdrant",
+      "milvus"
+    ]
+  },
+  {
+    "query": "Weaviate支持哪些检索算法？",
+    "expected_keywords": [
+      "重排序",
+      "recall",
+      "支持哪些检索算法",
+      "qdrant",
+      "召回",
+      "关键词检索",
+      "混合检索",
+      "向量检索",
+      "rerank",
+      "rag",
+      "检索",
+      "检索增强",
+      "weaviate",
+      "向量数据库",
+      "retrieval augmented generation",
+      "chroma",
+      "向量",
+      "bm25",
+      "vector database",
+      "Weaviate",
+      "milvus"
+    ]
+  },
+  {
+    "query": "如果需要极致的性能调优，Milvus是不是更好的选择？",
+    "expected_keywords": [
+      "chroma",
+      "如果需要极致的性能调优",
+      "Milvus",
+      "向量",
+      "是不是更好的选择",
+      "weaviate",
+      "向量数据库",
+      "vector database",
+      "qdrant",
+      "milvus"
+    ]
+  },
+  {
+    "query": "轻量级的本地原型开发，用哪个向量数据库比较合适？",
+    "expected_keywords": [
+      "chroma",
+      "轻量级的本地原型开发",
+      "向量",
+      "用哪个向量数据库比较合适",
+      "weaviate",
+      "向量数据库",
+      "vector database",
+      "qdrant",
+      "milvus"
+    ]
+  },
+  {
+    "query": "Milvus的底层架构是存储计算分离的吗？",
+    "expected_keywords": [
+      "chroma",
+      "Milvus",
+      "的底层架构是存储计算分离的吗",
+      "向量",
+      "weaviate",
+      "向量数据库",
+      "vector database",
+      "qdrant",
+      "milvus"
+    ]
+  },
+  {
+    "query": "千万级数据量，选Weaviate还是Chroma？",
+    "expected_keywords": [
+      "chroma",
+      "Chroma",
+      "向量",
+      "千万级数据量",
+      "还是",
+      "weaviate",
+      "Weaviate",
+      "向量数据库",
+      "vector database",
+      "qdrant",
+      "milvus"
+    ]
+  },
+  {
+    "query": "向量数据库那么多，Milvus和Chroma有啥区别？",
+    "expected_keywords": [
+      "chroma",
+      "向量数据库那么多",
+      "Milvus",
+      "Chroma",
+      "有啥区别",
+      "向量",
+      "weaviate",
+      "向量数据库",
+      "vector database",
+      "qdrant",
+      "milvus"
+    ]
+  },
+  {
+    "query": "搞个小项目，用哪个向量数据库最简单？",
+    "expected_keywords": [
+      "chroma",
+      "搞个小项目",
+      "向量",
+      "weaviate",
+      "向量数据库",
+      "vector database",
+      "qdrant",
+      "用哪个向量数据库最简单",
+      "milvus"
+    ]
+  },
+  {
+    "query": "听说Milvus支持百亿级数据，真的吗？",
+    "expected_keywords": [
+      "chroma",
+      "Milvus",
+      "支持百亿级数据",
+      "真的吗",
+      "听说",
+      "向量",
+      "weaviate",
+      "向量数据库",
+      "vector database",
+      "qdrant",
+      "milvus"
+    ]
+  },
+  {
+    "query": "文本分块有哪些常用的策略？",
+    "expected_keywords": [
+      "递归字符",
+      "分块",
+      "文档切割",
+      "滑动窗口",
+      "chunk",
+      "重叠",
+      "切块",
+      "文本分块有哪些常用的策略",
+      "切割"
+    ]
+  },
+  {
+    "query": "滑动窗口切割有什么好处？",
+    "expected_keywords": [
+      "递归字符",
+      "滑动窗口切割有什么好处",
+      "分块",
+      "文档切割",
+      "滑动窗口",
+      "chunk",
+      "重叠",
+      "切块",
+      "切割"
+    ]
+  },
+  {
+    "query": "递归字符分块器的核心思想是什么？",
+    "expected_keywords": [
+      "递归字符",
+      "分块",
+      "文档切割",
+      "滑动窗口",
+      "递归字符分块器的核心思想是什么",
+      "chunk",
+      "重叠",
+      "切块",
+      "切割"
+    ]
+  },
+  {
+    "query": "怎么避免在分块的时候把完整的语义给切断了？",
+    "expected_keywords": [
+      "递归字符",
+      "怎么避免在分块的时候把完整的语义给切断了",
+      "分块",
+      "文档切割",
+      "滑动窗口",
+      "chunk",
+      "重叠",
+      "切块",
+      "切割"
+    ]
+  },
+  {
+    "query": "为什么RAG系统里一定要对文档进行切割？",
+    "expected_keywords": [
+      "系统里一定要对文档进行切割",
+      "递归字符",
+      "分块",
+      "RAG",
+      "文档切割",
+      "滑动窗口",
+      "rag",
+      "检索",
+      "chunk",
+      "检索增强",
+      "重叠",
+      "切块",
+      "retrieval augmented generation",
+      "切割"
+    ]
+  },
+  {
+    "query": "按固定长度切割文本有什么缺点？",
+    "expected_keywords": [
+      "递归字符",
+      "分块",
+      "文档切割",
+      "滑动窗口",
+      "chunk",
+      "重叠",
+      "切块",
+      "按固定长度切割文本有什么缺点",
+      "切割"
+    ]
+  },
+  {
+    "query": "结构化切割适合处理哪种类型的文档？",
+    "expected_keywords": [
+      "递归字符",
+      "分块",
+      "文档切割",
+      "滑动窗口",
+      "结构化切割适合处理哪种类型的文档",
+      "chunk",
+      "重叠",
+      "切块",
+      "切割"
+    ]
+  },
+  {
+    "query": "如果chunk太大，对检索会有什么负面影响？",
+    "expected_keywords": [
+      "对检索会有什么负面影响",
+      "如果",
+      "重排序",
+      "文档切割",
+      "重叠",
+      "切块",
+      "太大",
+      "分块",
+      "recall",
+      "滑动窗口",
+      "召回",
+      "混合检索",
+      "向量检索",
+      "rerank",
+      "rag",
+      "检索",
+      "chunk",
+      "检索增强",
+      "retrieval augmented generation",
+      "递归字符",
+      "bm25",
+      "关键词检索",
+      "切割"
+    ]
+  },
+  {
+    "query": "重叠文本在滑动窗口切割中一般占多大比例？",
+    "expected_keywords": [
+      "递归字符",
+      "分块",
+      "文档切割",
+      "滑动窗口",
+      "chunk",
+      "重叠",
+      "切块",
+      "重叠文本在滑动窗口切割中一般占多大比例",
+      "切割"
+    ]
+  },
+  {
+    "query": "语义切割是怎么做到智能切分的？",
+    "expected_keywords": [
+      "递归字符",
+      "分块",
+      "文档切割",
+      "滑动窗口",
+      "语义切割是怎么做到智能切分的",
+      "chunk",
+      "重叠",
+      "切块",
+      "切割"
+    ]
+  },
+  {
+    "query": "文档切块怎么切才不会把意思搞断？",
+    "expected_keywords": [
+      "递归字符",
+      "分块",
+      "文档切割",
+      "滑动窗口",
+      "chunk",
+      "文档切块怎么切才不会把意思搞断",
+      "重叠",
+      "切块",
+      "切割"
+    ]
+  },
+  {
+    "query": "那个递归字符分块器是怎么工作的？",
+    "expected_keywords": [
+      "递归字符",
+      "分块",
+      "那个递归字符分块器是怎么工作的",
+      "文档切割",
+      "滑动窗口",
+      "chunk",
+      "重叠",
+      "切块",
+      "切割"
+    ]
+  },
+  {
+    "query": "预处理的时候，为什么要搞滑动窗口？",
+    "expected_keywords": [
+      "递归字符",
+      "分块",
+      "为什么要搞滑动窗口",
+      "文档切割",
+      "滑动窗口",
+      "预处理的时候",
+      "chunk",
+      "重叠",
+      "切块",
+      "切割"
+    ]
+  },
+  {
+    "query": "稠密向量和稀疏向量在检索时有什么区别？",
+    "expected_keywords": [
+      "重排序",
+      "recall",
+      "vector database",
+      "qdrant",
+      "稠密向量和稀疏向量在检索时有什么区别",
+      "召回",
+      "混合检索",
+      "向量检索",
+      "rerank",
+      "rag",
+      "检索",
+      "weaviate",
+      "检索增强",
+      "向量数据库",
+      "retrieval augmented generation",
+      "chroma",
+      "向量",
+      "bm25",
+      "关键词检索",
+      "milvus"
+    ]
+  },
+  {
+    "query": "什么是对称检索和非对称检索？",
+    "expected_keywords": [
+      "召回",
+      "关键词检索",
+      "混合检索",
+      "向量检索",
+      "recall",
+      "重排序",
+      "rerank",
+      "rag",
+      "bm25",
+      "检索",
+      "检索增强",
+      "什么是对称检索和非对称检索",
+      "retrieval augmented generation"
+    ]
+  },
+  {
+    "query": "怎么解决切块后全局信息丢失的问题？",
+    "expected_keywords": [
+      "递归字符",
+      "怎么解决切块后全局信息丢失的问题",
+      "分块",
+      "文档切割",
+      "滑动窗口",
+      "chunk",
+      "重叠",
+      "切块",
+      "切割"
+    ]
+  },
+  {
+    "query": "ParentDocumentRetriever是怎么扩充召回上下文的？",
+    "expected_keywords": [
+      "短期记忆",
+      "召回",
+      "混合检索",
+      "上下文",
+      "kv cache",
+      "是怎么扩充召回上下文的",
+      "memory",
+      "向量检索",
+      "recall",
+      "ParentDocumentRetriever",
+      "重排序",
+      "rerank",
+      "bm25",
+      "检索",
+      "关键词检索",
+      "记忆",
+      "长期记忆"
+    ]
+  },
+  {
+    "query": "文本多向量表示是为了解决什么问题？",
+    "expected_keywords": [
+      "chroma",
+      "weaviate",
+      "向量",
+      "文本多向量表示是为了解决什么问题",
+      "向量数据库",
+      "vector database",
+      "qdrant",
+      "milvus"
+    ]
+  },
+  {
+    "query": "用户提问太口语化导致召回不准怎么办？",
+    "expected_keywords": [
+      "召回",
+      "混合检索",
+      "向量检索",
+      "recall",
+      "重排序",
+      "rerank",
+      "bm25",
+      "检索",
+      "关键词检索",
+      "用户提问太口语化导致召回不准怎么办"
+    ]
+  },
+  {
+    "query": "RAG召回后为什么还要做重排序？",
+    "expected_keywords": [
+      "召回后为什么还要做重排序",
+      "召回",
+      "混合检索",
+      "关键词检索",
+      "向量检索",
+      "recall",
+      "RAG",
+      "重排序",
+      "rerank",
+      "rag",
+      "bm25",
+      "检索",
+      "检索增强",
+      "retrieval augmented generation"
+    ]
+  },
+  {
+    "query": "结合元数据召回有什么优势？",
+    "expected_keywords": [
+      "召回",
+      "混合检索",
+      "向量检索",
+      "recall",
+      "重排序",
+      "rerank",
+      "bm25",
+      "检索",
+      "关键词检索",
+      "结合元数据召回有什么优势"
+    ]
+  },
+  {
+    "query": "BERT和OpenAI Embeddings在文本嵌入上有什么不同？",
+    "expected_keywords": [
+      "在文本嵌入上有什么不同",
+      "大模型",
+      "deepseek",
+      "模型",
+      "Embeddings",
+      "BERT",
+      "openai",
+      "llm",
+      "OpenAI"
+    ]
+  },
+  {
+    "query": "交叉编码器在重排序中是怎么起作用的？",
+    "expected_keywords": [
+      "召回",
+      "交叉编码器在重排序中是怎么起作用的",
+      "混合检索",
+      "向量检索",
+      "recall",
+      "重排序",
+      "rerank",
+      "bm25",
+      "检索",
+      "关键词检索"
+    ]
+  },
+  {
+    "query": "搜不到想要的东西，召回怎么优化？",
+    "expected_keywords": [
+      "搜不到想要的东西",
+      "召回",
+      "混合检索",
+      "召回怎么优化",
+      "向量检索",
+      "recall",
+      "重排序",
+      "rerank",
+      "bm25",
+      "检索",
+      "关键词检索"
+    ]
+  },
+  {
+    "query": "那个父文档检索器是干嘛用的？",
+    "expected_keywords": [
+      "召回",
+      "关键词检索",
+      "混合检索",
+      "那个父文档检索器是干嘛用的",
+      "向量检索",
+      "recall",
+      "重排序",
+      "rerank",
+      "rag",
+      "bm25",
+      "检索",
+      "检索增强",
+      "retrieval augmented generation"
+    ]
+  },
+  {
+    "query": "向量模型选哪个好，OpenAI的还是开源的？",
+    "expected_keywords": [
+      "chroma",
+      "向量模型选哪个好",
+      "OpenAI",
+      "大模型",
+      "llm",
+      "模型",
+      "deepseek",
+      "向量",
+      "的还是开源的",
+      "weaviate",
+      "openai",
+      "向量数据库",
+      "vector database",
+      "qdrant",
+      "milvus"
+    ]
+  },
+  {
+    "query": "传统RAG有哪些痛点是GraphRAG能解决的？",
+    "expected_keywords": [
+      "实体",
+      "全局检索",
+      "GraphRAG",
+      "图",
+      "知识图谱",
+      "能解决的",
+      "传统",
+      "graphrag",
+      "RAG",
+      "rag",
+      "有哪些痛点是",
+      "检索",
+      "局部检索",
+      "检索增强",
+      "关系",
+      "retrieval augmented generation"
+    ]
+  },
+  {
+    "query": "GraphRAG是怎么做多跳推理的？",
+    "expected_keywords": [
+      "量化",
+      "graphrag",
+      "推理",
+      "局部检索",
+      "加速",
+      "模型压缩",
+      "全局检索",
+      "蒸馏",
+      "实体",
+      "是怎么做多跳推理的",
+      "GraphRAG",
+      "知识图谱",
+      "剪枝",
+      "rag",
+      "检索",
+      "检索增强",
+      "关系",
+      "retrieval augmented generation",
+      "图",
+      "vllm"
+    ]
+  },
+  {
+    "query": "GraphRAG里的全局检索和局部检索有什么区别？",
+    "expected_keywords": [
+      "graphrag",
+      "重排序",
+      "局部检索",
+      "里的全局检索和局部检索有什么区别",
+      "全局检索",
+      "recall",
+      "实体",
+      "召回",
+      "GraphRAG",
+      "混合检索",
+      "知识图谱",
+      "向量检索",
+      "rerank",
+      "rag",
+      "检索",
+      "检索增强",
+      "关系",
+      "retrieval augmented generation",
+      "图",
+      "bm25",
+      "关键词检索"
+    ]
+  },
+  {
+    "query": "社区检测算法在GraphRAG里有什么用？",
+    "expected_keywords": [
+      "实体",
+      "全局检索",
+      "GraphRAG",
+      "图",
+      "社区检测算法在",
+      "知识图谱",
+      "里有什么用",
+      "graphrag",
+      "rag",
+      "局部检索",
+      "检索",
+      "检索增强",
+      "关系",
+      "retrieval augmented generation"
+    ]
+  },
+  {
+    "query": "Leiden算法和Louvain算法哪个更适合大规模图谱？",
+    "expected_keywords": [
+      "Leiden",
+      "实体",
+      "全局检索",
+      "图",
+      "知识图谱",
+      "Louvain",
+      "graphrag",
+      "局部检索",
+      "算法哪个更适合大规模图谱",
+      "关系",
+      "算法和"
+    ]
+  },
+  {
+    "query": "怎么把非结构化文本抽成知识图谱的节点和边？",
+    "expected_keywords": [
+      "实体",
+      "全局检索",
+      "图",
+      "知识图谱",
+      "怎么把非结构化文本抽成知识图谱的节点和边",
+      "graphrag",
+      "局部检索",
+      "关系"
+    ]
+  },
+  {
+    "query": "GraphRAG能解决大模型幻觉问题吗？",
+    "expected_keywords": [
+      "模型",
+      "graphrag",
+      "局部检索",
+      "全局检索",
+      "胡说八道",
+      "openai",
+      "实体",
+      "GraphRAG",
+      "知识图谱",
+      "能解决大模型幻觉问题吗",
+      "rag",
+      "检索",
+      "检索增强",
+      "关系",
+      "llm",
+      "retrieval augmented generation",
+      "幻觉",
+      "图",
+      "大模型",
+      "deepseek",
+      "hallucination",
+      "瞎编"
+    ]
+  },
+  {
+    "query": "实体对齐在构建知识图谱时是为了解决什么问题？",
+    "expected_keywords": [
+      "实体",
+      "全局检索",
+      "图",
+      "知识图谱",
+      "实体对齐在构建知识图谱时是为了解决什么问题",
+      "graphrag",
+      "局部检索",
+      "关系"
+    ]
+  },
+  {
+    "query": "小规模试验的话，图谱存储选哪个比较好？",
+    "expected_keywords": [
+      "实体",
+      "全局检索",
+      "图",
+      "知识图谱",
+      "图谱存储选哪个比较好",
+      "graphrag",
+      "局部检索",
+      "关系",
+      "小规模试验的话"
+    ]
+  },
+  {
+    "query": "GraphRAG召回时带上关系路径有什么好处？",
+    "expected_keywords": [
+      "graphrag",
+      "重排序",
+      "局部检索",
+      "全局检索",
+      "recall",
+      "实体",
+      "召回",
+      "GraphRAG",
+      "混合检索",
+      "知识图谱",
+      "向量检索",
+      "rerank",
+      "rag",
+      "检索",
+      "检索增强",
+      "关系",
+      "retrieval augmented generation",
+      "召回时带上关系路径有什么好处",
+      "图",
+      "bm25",
+      "关键词检索"
+    ]
+  },
+  {
+    "query": "知识图谱加RAG，到底强在哪？",
+    "expected_keywords": [
+      "实体",
+      "全局检索",
+      "图",
+      "知识图谱",
+      "知识图谱加",
+      "graphrag",
+      "RAG",
+      "到底强在哪",
+      "rag",
+      "局部检索",
+      "检索",
+      "检索增强",
+      "关系",
+      "retrieval augmented generation"
+    ]
+  },
+  {
+    "query": "微软那个GraphRAG的全局检索是怎么回事？",
+    "expected_keywords": [
+      "微软那个",
+      "graphrag",
+      "重排序",
+      "局部检索",
+      "全局检索",
+      "recall",
+      "的全局检索是怎么回事",
+      "实体",
+      "召回",
+      "GraphRAG",
+      "混合检索",
+      "知识图谱",
+      "向量检索",
+      "rerank",
+      "rag",
+      "检索",
+      "检索增强",
+      "关系",
+      "retrieval augmented generation",
+      "图",
+      "bm25",
+      "关键词检索"
+    ]
+  },
+  {
+    "query": "抽实体和关系，大模型老是胡说八道怎么办？",
+    "expected_keywords": [
+      "实体",
+      "全局检索",
+      "幻觉",
+      "图",
+      "抽实体和关系",
+      "知识图谱",
+      "大模型",
+      "模型",
+      "deepseek",
+      "graphrag",
+      "hallucination",
+      "局部检索",
+      "大模型老是胡说八道怎么办",
+      "关系",
+      "胡说八道",
+      "llm",
+      "瞎编",
+      "openai"
+    ]
+  },
+  {
+    "query": "Query改写主要是为了解决什么问题？",
+    "expected_keywords": [
+      "query改写",
+      "Query",
+      "step-back",
+      "改写主要是为了解决什么问题",
+      "改写",
+      "decomposition",
+      "hyde",
+      "拆解"
+    ]
+  },
+  {
+    "query": "RAG-Fusion的倒数排名融合（RRF）算法是怎么算分的？",
+    "expected_keywords": [
+      "算法是怎么算分的",
+      "RRF",
+      "RAG",
+      "的倒数排名融合",
+      "rag",
+      "检索",
+      "检索增强",
+      "Fusion",
+      "retrieval augmented generation"
+    ]
+  },
+  {
+    "query": "Decomposition把问题拆解后是怎么处理的？",
+    "expected_keywords": [
+      "query改写",
+      "把问题拆解后是怎么处理的",
+      "step-back",
+      "decomposition",
+      "改写",
+      "Decomposition",
+      "hyde",
+      "拆解"
+    ]
+  },
+  {
+    "query": "HyDE反向检索的原理是什么？",
+    "expected_keywords": [
+      "step-back",
+      "重排序",
+      "recall",
+      "反向检索的原理是什么",
+      "hyde",
+      "query改写",
+      "召回",
+      "混合检索",
+      "向量检索",
+      "HyDE",
+      "改写",
+      "rerank",
+      "rag",
+      "检索",
+      "检索增强",
+      "retrieval augmented generation",
+      "bm25",
+      "关键词检索",
+      "decomposition",
+      "拆解"
+    ]
+  },
+  {
+    "query": "Step-back Prompting适合处理哪类问题？",
+    "expected_keywords": [
+      "Prompting",
+      "query改写",
+      "back",
+      "Step",
+      "step-back",
+      "改写",
+      "适合处理哪类问题",
+      "decomposition",
+      "hyde",
+      "拆解"
+    ]
+  },
+  {
+    "query": "HyDE方法有什么明显的缺点？",
+    "expected_keywords": [
+      "query改写",
+      "step-back",
+      "方法有什么明显的缺点",
+      "HyDE",
+      "改写",
+      "decomposition",
+      "hyde",
+      "拆解"
+    ]
+  },
+  {
+    "query": "RAG-Fusion能提高召回率吗？",
+    "expected_keywords": [
+      "能提高召回率吗",
+      "召回",
+      "关键词检索",
+      "混合检索",
+      "向量检索",
+      "recall",
+      "RAG",
+      "重排序",
+      "rerank",
+      "rag",
+      "bm25",
+      "检索",
+      "检索增强",
+      "Fusion",
+      "retrieval augmented generation"
+    ]
+  },
+  {
+    "query": "混合检索里的并行检索和串行检索有什么区别？",
+    "expected_keywords": [
+      "召回",
+      "关键词检索",
+      "混合检索",
+      "检索增强",
+      "向量检索",
+      "recall",
+      "重排序",
+      "rerank",
+      "rag",
+      "bm25",
+      "检索",
+      "混合检索里的并行检索和串行检索有什么区别",
+      "retrieval augmented generation"
+    ]
+  },
+  {
+    "query": "关键词检索在什么情况下比向量检索好用？",
+    "expected_keywords": [
+      "重排序",
+      "recall",
+      "vector database",
+      "qdrant",
+      "召回",
+      "混合检索",
+      "关键词检索在什么情况下比向量检索好用",
+      "向量检索",
+      "rerank",
+      "rag",
+      "检索",
+      "weaviate",
+      "检索增强",
+      "向量数据库",
+      "retrieval augmented generation",
+      "chroma",
+      "向量",
+      "bm25",
+      "关键词检索",
+      "milvus"
+    ]
+  },
+  {
+    "query": "思维链（CoT）在提示词工程里起什么作用？",
+    "expected_keywords": [
+      "思维链",
+      "CoT",
+      "在提示词工程里起什么作用"
+    ]
+  },
+  {
+    "query": "用户瞎提问，系统怎么改写Query？",
+    "expected_keywords": [
+      "query改写",
+      "系统怎么改写",
+      "Query",
+      "step-back",
+      "用户瞎提问",
+      "改写",
+      "decomposition",
+      "hyde",
+      "拆解"
+    ]
+  },
+  {
+    "query": "那个HyDE，先让大模型瞎编个答案再去搜，靠谱吗？",
+    "expected_keywords": [
+      "模型",
+      "step-back",
+      "先让大模型瞎编个答案再去搜",
+      "那个",
+      "胡说八道",
+      "openai",
+      "hyde",
+      "query改写",
+      "靠谱吗",
+      "HyDE",
+      "改写",
+      "llm",
+      "幻觉",
+      "大模型",
+      "deepseek",
+      "hallucination",
+      "decomposition",
+      "瞎编",
+      "拆解"
+    ]
+  },
+  {
+    "query": "提示词怎么写才能让大模型变聪明？",
+    "expected_keywords": [
+      "大模型",
+      "deepseek",
+      "模型",
+      "提示词怎么写才能让大模型变聪明",
+      "openai",
+      "llm"
+    ]
+  },
+  {
+    "query": "Agent和传统的工作流有什么本质区别？",
+    "expected_keywords": [
+      "单智能体",
+      "工作流",
+      "Agent",
+      "agent",
+      "多智能体",
+      "智能体",
+      "multi-agent",
+      "和传统的工作流有什么本质区别"
+    ]
+  },
+  {
+    "query": "LangGraph和LangChain相比有什么优势？",
+    "expected_keywords": [
+      "相比有什么优势",
+      "LangChain",
+      "LangGraph"
+    ]
+  },
+  {
+    "query": "Dify这个框架适合什么场景？",
+    "expected_keywords": [
+      "这个框架适合什么场景",
+      "Dify"
+    ]
+  },
+  {
+    "query": "AutoGPT能做到完全不需要人工干预吗？",
+    "expected_keywords": [
+      "能做到完全不需要人工干预吗",
+      "AutoGPT"
+    ]
+  },
+  {
+    "query": "LangChain v1.0更新了哪些重要内容？",
+    "expected_keywords": [
+      "0",
+      "v1",
+      "LangChain",
+      "更新了哪些重要内容"
+    ]
+  },
+  {
+    "query": "LangChain的链式调用有什么不方便的地方？",
+    "expected_keywords": [
+      "调用",
+      "skill",
+      "LangChain",
+      "工具调用",
+      "的链式调用有什么不方便的地方",
+      "function calling",
+      "意图识别",
+      "mcp"
+    ]
+  },
+  {
+    "query": "LangGraph里的控制流和数据流是怎么设计的？",
+    "expected_keywords": [
+      "里的控制流和数据流是怎么设计的",
+      "LangGraph"
+    ]
+  },
+  {
+    "query": "无工具依赖的Agent是怎么完成任务的？",
+    "expected_keywords": [
+      "单智能体",
+      "无工具依赖的",
+      "工作流",
+      "Agent",
+      "是怎么完成任务的",
+      "agent",
+      "多智能体",
+      "智能体",
+      "multi-agent"
+    ]
+  },
+  {
+    "query": "coze和Dify相比，哪个门槛更低？",
+    "expected_keywords": [
+      "哪个门槛更低",
+      "相比",
+      "coze",
+      "Dify"
+    ]
+  },
+  {
+    "query": "AutoGen在多智能体协作方面表现怎么样？",
+    "expected_keywords": [
+      "在多智能体协作方面表现怎么样",
+      "单智能体",
+      "AutoGen",
+      "工作流",
+      "agent",
+      "多智能体",
+      "智能体",
+      "multi-agent"
+    ]
+  },
+  {
+    "query": "智能体和普通的工作流到底哪里不一样？",
+    "expected_keywords": [
+      "单智能体",
+      "工作流",
+      "agent",
+      "多智能体",
+      "智能体",
+      "multi-agent",
+      "智能体和普通的工作流到底哪里不一样"
+    ]
+  },
+  {
+    "query": "LangChain太臃肿了，有啥替代品吗？",
+    "expected_keywords": [
+      "LangChain",
+      "有啥替代品吗",
+      "太臃肿了"
+    ]
+  },
+  {
+    "query": "想搞个多Agent，用哪个框架好？",
+    "expected_keywords": [
+      "单智能体",
+      "用哪个框架好",
+      "工作流",
+      "Agent",
+      "agent",
+      "多智能体",
+      "智能体",
+      "multi-agent",
+      "想搞个多"
+    ]
+  },
+  {
+    "query": "单Agent和多Agent架构怎么选？",
+    "expected_keywords": [
+      "和多",
+      "单智能体",
+      "工作流",
+      "Agent",
+      "agent",
+      "多智能体",
+      "智能体",
+      "multi-agent",
+      "架构怎么选"
+    ]
+  },
+  {
+    "query": "独立多体（MAS Independent）架构有什么缺点？",
+    "expected_keywords": [
+      "MAS",
+      "架构有什么缺点",
+      "Independent",
+      "独立多体"
+    ]
+  },
+  {
+    "query": "中心化多Agent架构适合什么类型的任务？",
+    "expected_keywords": [
+      "单智能体",
+      "工作流",
+      "Agent",
+      "中心化多",
+      "agent",
+      "多智能体",
+      "智能体",
+      "multi-agent",
+      "架构适合什么类型的任务"
+    ]
+  },
+  {
+    "query": "去中心化辩论架构在什么场景下表现更好？",
+    "expected_keywords": [
+      "去中心化辩论架构在什么场景下表现更好"
+    ]
+  },
+  {
+    "query": "引入多Agent架构一定会提升系统性能吗？",
+    "expected_keywords": [
+      "单智能体",
+      "multi-agent",
+      "工作流",
+      "Agent",
+      "agent",
+      "多智能体",
+      "智能体",
+      "引入多",
+      "架构一定会提升系统性能吗"
+    ]
+  },
+  {
+    "query": "动态网络浏览任务，设计什么样的Agent架构比较好？",
+    "expected_keywords": [
+      "设计什么样的",
+      "单智能体",
+      "工作流",
+      "Agent",
+      "agent",
+      "智能体",
+      "多智能体",
+      "multi-agent",
+      "动态网络浏览任务",
+      "架构比较好"
+    ]
+  },
+  {
+    "query": "金融估值这种规范流程，适合用哪种Agent架构？",
+    "expected_keywords": [
+      "架构",
+      "金融估值这种规范流程",
+      "单智能体",
+      "工作流",
+      "Agent",
+      "agent",
+      "智能体",
+      "多智能体",
+      "multi-agent",
+      "适合用哪种"
+    ]
+  },
+  {
+    "query": "Agent之间通信的移交和工具调用模式有什么区别？",
+    "expected_keywords": [
+      "调用",
+      "之间通信的移交和工具调用模式有什么区别",
+      "单智能体",
+      "skill",
+      "工具调用",
+      "工作流",
+      "Agent",
+      "function calling",
+      "agent",
+      "多智能体",
+      "智能体",
+      "multi-agent",
+      "意图识别",
+      "mcp"
+    ]
+  },
+  {
+    "query": "多Agent系统里，共享完整推理数据有什么坏处？",
+    "expected_keywords": [
+      "单智能体",
+      "加速",
+      "系统里",
+      "共享完整推理数据有什么坏处",
+      "量化",
+      "推理",
+      "工作流",
+      "Agent",
+      "vllm",
+      "剪枝",
+      "agent",
+      "多智能体",
+      "智能体",
+      "multi-agent",
+      "蒸馏",
+      "模型压缩"
+    ]
+  },
+  {
+    "query": "单Agent在什么情况下比多Agent更稳？",
+    "expected_keywords": [
+      "单智能体",
+      "更稳",
+      "工作流",
+      "Agent",
+      "agent",
+      "多智能体",
+      "智能体",
+      "multi-agent",
+      "在什么情况下比多"
+    ]
+  },
+  {
+    "query": "什么时候该用多智能体，什么时候单智能体就够了？",
+    "expected_keywords": [
+      "什么时候该用多智能体",
+      "单智能体",
+      "工作流",
+      "agent",
+      "多智能体",
+      "智能体",
+      "multi-agent",
+      "什么时候单智能体就够了"
+    ]
+  },
+  {
+    "query": "那个中心化的Agent架构，主管会不会成为瓶颈？",
+    "expected_keywords": [
+      "架构",
+      "单智能体",
+      "multi-agent",
+      "工作流",
+      "Agent",
+      "agent",
+      "多智能体",
+      "智能体",
+      "那个中心化的",
+      "主管会不会成为瓶颈"
+    ]
+  },
+  {
+    "query": "多个Agent一起干活，怎么防止它们互相带偏？",
+    "expected_keywords": [
+      "怎么防止它们互相带偏",
+      "单智能体",
+      "多个",
+      "Agent",
+      "工作流",
+      "一起干活",
+      "agent",
+      "多智能体",
+      "智能体",
+      "multi-agent"
+    ]
+  },
+  {
+    "query": "Function Calling是怎么训练出来的？",
+    "expected_keywords": [
+      "调用",
+      "skill",
+      "工具调用",
+      "是怎么训练出来的",
+      "function calling",
+      "Function",
+      "Calling",
+      "意图识别",
+      "mcp"
+    ]
+  },
+  {
+    "query": "多轮对话里，什么时候Agent需要主动追问？",
+    "expected_keywords": [
+      "需要主动追问",
+      "单智能体",
+      "多轮对话里",
+      "multi-agent",
+      "工作流",
+      "Agent",
+      "agent",
+      "智能体",
+      "什么时候",
+      "多智能体"
+    ]
+  },
+  {
+    "query": "怎么用沙盒生成多轮对话的训练数据？",
+    "expected_keywords": [
+      "怎么用沙盒生成多轮对话的训练数据"
+    ]
+  },
+  {
+    "query": "大模型调用工具失败通常有哪些原因？",
+    "expected_keywords": [
+      "调用",
+      "大模型",
+      "deepseek",
+      "skill",
+      "模型",
+      "工具调用",
+      "function calling",
+      "意图识别",
+      "大模型调用工具失败通常有哪些原因",
+      "llm",
+      "openai",
+      "mcp"
+    ]
+  },
+  {
+    "query": "LangChain里的短期记忆是怎么实现的？",
+    "expected_keywords": [
+      "短期记忆",
+      "上下文",
+      "kv cache",
+      "memory",
+      "LangChain",
+      "里的短期记忆是怎么实现的",
+      "记忆",
+      "长期记忆"
+    ]
+  },
+  {
+    "query": "LangGraph的记忆功能和LangChain有什么区别？",
+    "expected_keywords": [
+      "短期记忆",
+      "上下文",
+      "有什么区别",
+      "kv cache",
+      "memory",
+      "的记忆功能和",
+      "LangChain",
+      "记忆",
+      "长期记忆",
+      "LangGraph"
+    ]
+  },
+  {
+    "query": "Summary Buffer Memory是怎么压缩上下文的？",
+    "expected_keywords": [
+      "Memory",
+      "是怎么压缩上下文的",
+      "短期记忆",
+      "上下文",
+      "Summary",
+      "kv cache",
+      "memory",
+      "记忆",
+      "长期记忆",
+      "Buffer"
+    ]
+  },
+  {
+    "query": "怎么提升KV Cache的命中率？",
+    "expected_keywords": [
+      "短期记忆",
+      "Cache",
+      "上下文",
+      "kv cache",
+      "memory",
+      "的命中率",
+      "怎么提升",
+      "KV",
+      "记忆",
+      "长期记忆"
+    ]
+  },
+  {
+    "query": "掩码控制是怎么代替动态增删工具的？",
+    "expected_keywords": [
+      "掩码控制是怎么代替动态增删工具的"
+    ]
+  },
+  {
+    "query": "意图识别置信度低的时候应该怎么处理？",
+    "expected_keywords": [
+      "实体",
+      "全局检索",
+      "调用",
+      "图",
+      "知识图谱",
+      "skill",
+      "graphrag",
+      "工具调用",
+      "function calling",
+      "局部检索",
+      "意图识别置信度低的时候应该怎么处理",
+      "意图识别",
+      "关系",
+      "mcp"
+    ]
+  },
+  {
+    "query": "大模型老是乱调工具，怎么治？",
+    "expected_keywords": [
+      "大模型",
+      "deepseek",
+      "模型",
+      "怎么治",
+      "大模型老是乱调工具",
+      "openai",
+      "llm"
+    ]
+  },
+  {
+    "query": "怎么让Agent记住之前说过的话？",
+    "expected_keywords": [
+      "单智能体",
+      "记住之前说过的话",
+      "工作流",
+      "Agent",
+      "agent",
+      "多智能体",
+      "智能体",
+      "multi-agent",
+      "怎么让"
+    ]
+  },
+  {
+    "query": "那个KV Cache，怎么设计才能不失效？",
+    "expected_keywords": [
+      "怎么设计才能不失效",
+      "短期记忆",
+      "Cache",
+      "上下文",
+      "那个",
+      "kv cache",
+      "memory",
+      "KV",
+      "记忆",
+      "长期记忆"
+    ]
+  },
+  {
+    "query": "MCP协议和Function Calling有什么区别？",
+    "expected_keywords": [
+      "调用",
+      "MCP",
+      "有什么区别",
+      "skill",
+      "工具调用",
+      "function calling",
+      "Function",
+      "Calling",
+      "意图识别",
+      "协议和",
+      "mcp"
+    ]
+  },
+  {
+    "query": "本地MCP Server和远端MCP Server哪个更安全？",
+    "expected_keywords": [
+      "调用",
+      "和远端",
+      "MCP",
+      "skill",
+      "哪个更安全",
+      "本地",
+      "工具调用",
+      "function calling",
+      "Server",
+      "意图识别",
+      "mcp"
+    ]
+  },
+  {
+    "query": "MCP的传输协议最近有什么重大更新？",
+    "expected_keywords": [
+      "调用",
+      "MCP",
+      "skill",
+      "的传输协议最近有什么重大更新",
+      "工具调用",
+      "function calling",
+      "意图识别",
+      "mcp"
+    ]
+  },
+  {
+    "query": "Skill和普通的Prompt有什么不一样？",
+    "expected_keywords": [
+      "Prompt",
+      "Skill",
+      "调用",
+      "和普通的",
+      "有什么不一样",
+      "fine-tuning",
+      "skill",
+      "全量微调",
+      "微调",
+      "工具调用",
+      "sft",
+      "function calling",
+      "prompt tuning",
+      "lora",
+      "指令微调",
+      "意图识别",
+      "finetune",
+      "mcp"
+    ]
+  },
+  {
+    "query": "Skill和MCP可以结合使用吗？",
+    "expected_keywords": [
+      "Skill",
+      "调用",
+      "MCP",
+      "skill",
+      "可以结合使用吗",
+      "工具调用",
+      "function calling",
+      "意图识别",
+      "mcp"
+    ]
+  },
+  {
+    "query": "怎么评价一个Agent的性能？",
+    "expected_keywords": [
+      "单智能体",
+      "的性能",
+      "怎么评价一个",
+      "工作流",
+      "Agent",
+      "agent",
+      "多智能体",
+      "智能体",
+      "multi-agent"
+    ]
+  },
+  {
+    "query": "Agent的轨迹评估主要是看什么？",
+    "expected_keywords": [
+      "指标",
+      "单智能体",
+      "评测",
+      "的轨迹评估主要是看什么",
+      "工作流",
+      "Agent",
+      "忠诚度",
+      "ragas",
+      "recall",
+      "agent",
+      "多智能体",
+      "智能体",
+      "multi-agent",
+      "评估",
+      "相关性",
+      "mrr"
+    ]
+  },
+  {
+    "query": "美团龙猫论文里是怎么测评Agent的？",
+    "expected_keywords": [
+      "单智能体",
+      "美团龙猫论文里是怎么测评",
+      "工作流",
+      "Agent",
+      "agent",
+      "多智能体",
+      "智能体",
+      "multi-agent"
+    ]
+  },
+  {
+    "query": "A2A协议是为了解决什么问题？",
+    "expected_keywords": [
+      "协议是为了解决什么问题",
+      "A2A"
+    ]
+  },
+  {
+    "query": "Skill的渐进式披露机制是怎么省Token的？",
+    "expected_keywords": [
+      "Skill",
+      "调用",
+      "Token",
+      "skill",
+      "工具调用",
+      "function calling",
+      "的渐进式披露机制是怎么省",
+      "意图识别",
+      "mcp"
+    ]
+  },
+  {
+    "query": "MCP到底是个啥协议？",
+    "expected_keywords": [
+      "调用",
+      "MCP",
+      "skill",
+      "工具调用",
+      "function calling",
+      "到底是个啥协议",
+      "意图识别",
+      "mcp"
+    ]
+  },
+  {
+    "query": "提示词太长了，用Skill怎么解决？",
+    "expected_keywords": [
+      "Skill",
+      "调用",
+      "提示词太长了",
+      "skill",
+      "怎么解决",
+      "工具调用",
+      "function calling",
+      "意图识别",
+      "mcp"
+    ]
+  },
+  {
+    "query": "怎么知道我写的Agent到底行不行？",
+    "expected_keywords": [
+      "到底行不行",
+      "单智能体",
+      "工作流",
+      "Agent",
+      "agent",
+      "怎么知道我写的",
+      "多智能体",
+      "智能体",
+      "multi-agent"
+    ]
+  },
+  {
+    "query": "SFT和RLHF在目标上有什么区别？",
+    "expected_keywords": [
+      "在目标上有什么区别",
+      "SFT",
+      "fine-tuning",
+      "全量微调",
+      "微调",
+      "RLHF",
+      "prompt tuning",
+      "lora",
+      "指令微调",
+      "sft",
+      "finetune"
+    ]
+  },
+  {
+    "query": "LoRA微调相比全量微调有什么优点？",
+    "expected_keywords": [
+      "LoRA",
+      "fine-tuning",
+      "微调相比全量微调有什么优点",
+      "全量微调",
+      "微调",
+      "prompt tuning",
+      "lora",
+      "指令微调",
+      "sft",
+      "finetune"
+    ]
+  },
+  {
+    "query": "LoRA里的r（秩）参数设置多大比较合适？",
+    "expected_keywords": [
+      "LoRA",
+      "r",
+      "参数设置多大比较合适",
+      "fine-tuning",
+      "全量微调",
+      "微调",
+      "里的",
+      "retrieval augmented generation",
+      "prompt tuning",
+      "lora",
+      "rag",
+      "检索",
+      "指令微调",
+      "检索增强",
+      "sft",
+      "finetune"
+    ]
+  },
+  {
+    "query": "Prompt Tuning是怎么做微调的？",
+    "expected_keywords": [
+      "Prompt",
+      "fine-tuning",
+      "全量微调",
+      "微调",
+      "是怎么做微调的",
+      "prompt tuning",
+      "lora",
+      "指令微调",
+      "sft",
+      "Tuning",
+      "finetune"
+    ]
+  },
+  {
+    "query": "微调的数据集一般从哪里来？",
+    "expected_keywords": [
+      "fine-tuning",
+      "微调的数据集一般从哪里来",
+      "全量微调",
+      "微调",
+      "prompt tuning",
+      "lora",
+      "指令微调",
+      "sft",
+      "finetune"
+    ]
+  },
+  {
+    "query": "DeepSeek R1的训练过程分了哪几个阶段？",
+    "expected_keywords": [
+      "的训练过程分了哪几个阶段",
+      "大模型",
+      "deepseek",
+      "模型",
+      "DeepSeek",
+      "R1",
+      "openai",
+      "llm"
+    ]
+  },
+  {
+    "query": "模型量化会带来什么坏处？",
+    "expected_keywords": [
+      "模型量化会带来什么坏处",
+      "大模型",
+      "deepseek",
+      "量化",
+      "模型",
+      "vllm",
+      "推理",
+      "剪枝",
+      "加速",
+      "openai",
+      "llm",
+      "蒸馏",
+      "模型压缩"
+    ]
+  },
+  {
+    "query": "知识蒸馏是怎么把大模型的知识传给小模型的？",
+    "expected_keywords": [
+      "模型压缩",
+      "大模型",
+      "deepseek",
+      "量化",
+      "模型",
+      "vllm",
+      "推理",
+      "剪枝",
+      "加速",
+      "openai",
+      "llm",
+      "蒸馏",
+      "知识蒸馏是怎么把大模型的知识传给小模型的"
+    ]
+  },
+  {
+    "query": "vLLM推理框架有什么核心特点？",
+    "expected_keywords": [
+      "vLLM",
+      "大模型",
+      "deepseek",
+      "量化",
+      "模型",
+      "vllm",
+      "推理",
+      "推理框架有什么核心特点",
+      "剪枝",
+      "加速",
+      "openai",
+      "llm",
+      "蒸馏",
+      "模型压缩"
+    ]
+  },
+  {
+    "query": "在极端资源受限的场景下，选哪种模型压缩技术？",
+    "expected_keywords": [
+      "大模型",
+      "llm",
+      "量化",
+      "在极端资源受限的场景下",
+      "模型",
+      "deepseek",
+      "vllm",
+      "推理",
+      "剪枝",
+      "加速",
+      "openai",
+      "选哪种模型压缩技术",
+      "蒸馏",
+      "模型压缩"
+    ]
+  },
+  {
+    "query": "显存不够怎么微调大模型？",
+    "expected_keywords": [
+      "fine-tuning",
+      "大模型",
+      "llm",
+      "模型",
+      "deepseek",
+      "全量微调",
+      "微调",
+      "prompt tuning",
+      "lora",
+      "显存不够怎么微调大模型",
+      "指令微调",
+      "sft",
+      "openai",
+      "finetune"
+    ]
+  },
+  {
+    "query": "模型推理太慢了，怎么加速？",
+    "expected_keywords": [
+      "大模型",
+      "模型推理太慢了",
+      "量化",
+      "模型",
+      "deepseek",
+      "怎么加速",
+      "vllm",
+      "推理",
+      "剪枝",
+      "加速",
+      "openai",
+      "llm",
+      "蒸馏",
+      "模型压缩"
+    ]
+  },
+  {
+    "query": "剪枝和量化，哪个对模型伤害大？",
+    "expected_keywords": [
+      "蒸馏",
+      "大模型",
+      "deepseek",
+      "量化",
+      "模型",
+      "vllm",
+      "推理",
+      "哪个对模型伤害大",
+      "剪枝",
+      "加速",
+      "openai",
+      "llm",
+      "剪枝和量化",
+      "模型压缩"
+    ]
+  }
+]
