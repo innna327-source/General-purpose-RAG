@@ -43,7 +43,7 @@ class MCPHandler:
             answer = generate_answer(
                 query=req.query,
                 context_text=context_text,
-                model=SETTINGS.llm_model,
+                model=SETTINGS.generation_llm_model,
                 api_key=SETTINGS.llm_api_key or None,
                 base_url=SETTINGS.llm_base_url or None,
             )

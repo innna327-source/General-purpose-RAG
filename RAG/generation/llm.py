@@ -1,16 +1,139 @@
 from __future__ import annotations
 
 import os
+import json
+import re
+import unicodedata
 from typing import Optional
 
-_SYSTEM_PROMPT = """\
-你是一个严谨的文档问答助手。请严格依据下方【参考资料】中的内容回答用户问题。
+from config.settings import SETTINGS
+from generation.constants import NO_ANSWER_PHRASES, NO_ANSWER_RESPONSE
 
+
+_SYSTEM_PROMPT = """\
+你是一个严谨的文档问答助手。请严格依据下方【参考资料】回答用户问题。
 规则：
 1. 只使用参考资料中明确出现的信息，不得推断或补充资料外的内容。
-2. 如果参考资料中没有足够信息来回答问题，直接回复"根据现有资料无法回答该问题"，不要编造答案。
-3. 回答简洁，直接引用资料中的关键句，避免无关废话。
+2. 如果参考资料不能直接支持答案，必须只回复“根据现有资料无法回答该问题”。
+3. 每个结论都必须能在参考资料中找到对应依据；不要给常识性、经验性或泛泛而谈的回答。
+4. 仅“话题相关”不等于“可以回答”；必须有直接证据才能回答。
+5. 只输出 JSON，不要输出 Markdown。格式示例：
+{"answerable": true, "answer": "答案文本"}
+或
+{"answerable": false, "answer": "根据现有资料无法回答该问题"}
+6. 当 answerable 为 false 时，answer 必须是“根据现有资料无法回答该问题”。
 """
+
+_STOPWORDS = {
+    "什么",
+    "怎么",
+    "如何",
+    "哪个",
+    "哪些",
+    "是否",
+    "是不是",
+    "可以",
+    "能够",
+    "需要",
+    "以及",
+    "还是",
+    "这个",
+    "那个",
+    "一下",
+    "请问",
+    "为什么",
+    "多少",
+}
+
+
+def _normalize(text: str) -> str:
+    text = unicodedata.normalize("NFKC", text or "").lower()
+    return re.sub(r"\s+", "", text)
+
+
+def _content_terms(text: str) -> list[str]:
+    try:
+        import jieba
+
+        raw_terms = jieba.cut(text or "")
+    except Exception:
+        raw_terms = re.findall(r"[\u4e00-\u9fff]{2,}|[a-zA-Z0-9][a-zA-Z0-9_.+-]*", text or "")
+
+    terms: list[str] = []
+    seen: set[str] = set()
+    for term in raw_terms:
+        t = unicodedata.normalize("NFKC", str(term)).strip().lower()
+        if not t or t in _STOPWORDS:
+            continue
+        if len(t) < 2 and not re.fullmatch(r"[a-z0-9]+", t):
+            continue
+        if re.fullmatch(r"[\W_]+", t):
+            continue
+        if t not in seen:
+            seen.add(t)
+            terms.append(t)
+    return terms
+
+
+def _term_coverage(terms: list[str], text: str) -> float:
+    if not terms:
+        return 1.0
+    norm_text = _normalize(text)
+    hits = sum(1 for term in terms if _normalize(term) in norm_text)
+    return hits / len(terms)
+
+
+def is_no_answer_response(response: str) -> bool:
+    return any(phrase in (response or "") for phrase in NO_ANSWER_PHRASES)
+
+
+def is_context_answerable(query: str, context_text: str) -> tuple[bool, dict]:
+    query_terms = _content_terms(query)
+    coverage = _term_coverage(query_terms, context_text)
+    min_coverage = float(getattr(SETTINGS, "answerability_min_query_coverage", 0.30))
+    answerable = bool(context_text.strip()) and coverage >= min_coverage
+    return answerable, {
+        "query_terms": query_terms,
+        "query_coverage": round(coverage, 4),
+        "min_query_coverage": min_coverage,
+    }
+
+
+def is_answer_supported(answer: str, context_text: str) -> tuple[bool, dict]:
+    if is_no_answer_response(answer):
+        return True, {"answer_coverage": 1.0, "checked_terms": []}
+
+    answer_terms = _content_terms(answer)
+    # Keep the verifier focused on claims. Terms already present in the question
+    # are less useful for detecting unsupported additions, so the context check
+    # is intentionally run against the answer itself.
+    coverage = _term_coverage(answer_terms, context_text)
+    min_coverage = float(getattr(SETTINGS, "answerability_min_answer_coverage", 0.50))
+    return coverage >= min_coverage, {
+        "answer_coverage": round(coverage, 4),
+        "min_answer_coverage": min_coverage,
+        "checked_terms": answer_terms,
+    }
+
+
+def _parse_answer_payload(raw: str) -> tuple[Optional[bool], str]:
+    text = (raw or "").strip()
+    match = re.search(r"\{.*\}", text, re.DOTALL)
+    if not match:
+        return None, text
+
+    try:
+        payload = json.loads(match.group())
+    except Exception:
+        return None, text
+
+    answerable = payload.get("answerable")
+    if not isinstance(answerable, bool):
+        answerable = None
+    answer = payload.get("answer", "")
+    if not isinstance(answer, str):
+        answer = str(answer)
+    return answerable, answer.strip()
 
 
 def generate_answer(
@@ -19,15 +142,27 @@ def generate_answer(
     model: str,
     api_key: Optional[str] = None,
     base_url: Optional[str] = None,
+    enforce_answerability: Optional[bool] = None,
 ) -> str:
     """
-    调用 OpenAI 兼容接口根据检索到的 context_text 生成答案。
-    若 api_key 为空则直接返回原始 context_text（降级）。
+    调用 OpenAI 兼容接口，根据检索到的 context_text 生成答案。
+    若启用答案可支持性闸门，则在生成前过滤明显无依据的问题，
+    并在生成后过滤无法被上下文支持的回答。
     """
+    use_gate = (
+        SETTINGS.enable_answerability_gate
+        if enforce_answerability is None
+        else enforce_answerability
+    )
+
+    if use_gate:
+        answerable, _ = is_context_answerable(query, context_text)
+        if not answerable:
+            return NO_ANSWER_RESPONSE
+
     key = api_key or os.environ.get("OPENAI_API_KEY", "")
     if not key:
-        return context_text  # 无 API key，降级为直接返回检索结果
-
+        return context_text
     try:
         from openai import OpenAI
     except ImportError:
@@ -39,9 +174,22 @@ def generate_answer(
     response = client.chat.completions.create(
         model=model,
         max_tokens=512,
+        temperature=0,
         messages=[
             {"role": "system", "content": _SYSTEM_PROMPT},
             {"role": "user", "content": user_message},
         ],
     )
-    return response.choices[0].message.content
+    answer = response.choices[0].message.content
+    answerable, parsed_answer = _parse_answer_payload(answer)
+    if answerable is False:
+        return NO_ANSWER_RESPONSE
+    if parsed_answer:
+        answer = parsed_answer
+
+    if use_gate:
+        supported, _ = is_answer_supported(answer, context_text)
+        if not supported:
+            return NO_ANSWER_RESPONSE
+
+    return answer

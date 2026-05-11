@@ -58,6 +58,9 @@ class BM25Index:
     bm25: BM25Okapi
     chunks: List[dict]  # pos aligned
     chunk_text_by_id: dict[str, str]
+    parent_text_by_id: dict[str, str]  # parent_id -> 合并后的完整父文档文本
+    chunk_to_parent: dict[str, str]  # chunk_id -> parent_id 映射
+    chunks_by_pos: List[dict]  # 按 pos 排序的所有 chunks
 
     def search(self, query: str, top_k: int) -> List[dict]:
         tokenized_query = list(jieba.cut(query))
@@ -66,8 +69,49 @@ class BM25Index:
         idxs = sorted(range(len(scores)), key=lambda i: float(scores[i]), reverse=True)[:top_k]
         out: list[dict] = []
         for i in idxs:
-            out.append({"chunk_id": self.chunks[i]["chunk_id"], "score": float(scores[i])})
+            out.append({"chunk_id": self.chunks[i]["chunk_id"], "score": float(scores[i]), "pos": i})
         return out
+
+    def get_parent_text(self, chunk_id: str) -> str:
+        """根据chunk_id获取其所属父文档的完整文本"""
+        parent_id = self.chunk_to_parent.get(chunk_id)
+        if parent_id:
+            return self.parent_text_by_id.get(parent_id, "")
+        return ""
+
+    def expand_chunk_window(self, chunk_id: str, window_size: int = 2) -> str:
+        """
+        窗口扩展：返回命中chunk及其前后相邻chunk的合并文本
+
+        参数：
+        - chunk_id: 命中的chunk
+        - window_size: 前后扩展多少个chunk（默认前后各2个）
+
+        返回：合并后的扩展文本
+        """
+        # 找到该chunk的pos位置
+        chunk_pos = None
+        for i, c in enumerate(self.chunks_by_pos):
+            if c["chunk_id"] == chunk_id:
+                chunk_pos = i
+                break
+
+        if chunk_pos is None:
+            return self.chunk_text_by_id.get(chunk_id, "")
+
+        # 计算窗口范围
+        start = max(0, chunk_pos - window_size)
+        end = min(len(self.chunks_by_pos), chunk_pos + window_size + 1)
+
+        # 只合并同一个父文档内的chunk（避免跨主题）
+        target_parent = self.chunks_by_pos[chunk_pos].get("parent_id", "")
+        merged_texts = []
+        for i in range(start, end):
+            c = self.chunks_by_pos[i]
+            if c.get("parent_id") == target_parent:
+                merged_texts.append(c.get("text", ""))
+
+        return "\n".join(merged_texts)
 
 
 def build_index(chunks: List[dict], file_hash: str, k1: float, b: float) -> Path:
@@ -96,5 +140,36 @@ def load_index(file_hash: str) -> BM25Index:
     chunks = load_chunks_jsonl(file_hash)
     bm25: BM25Okapi = payload["bm25"]
     chunk_text_by_id = {c["chunk_id"]: c["text"] for c in chunks}
-    return BM25Index(file_hash=file_hash, bm25=bm25, chunks=chunks, chunk_text_by_id=chunk_text_by_id)
+
+    # 按pos排序保存（用于窗口扩展）
+    chunks_by_pos = sorted(chunks, key=lambda x: int(x.get("pos", 0)))
+
+    # 构建父文档映射：parent_id -> 合并后的完整文本
+    parent_chunks: dict[str, list] = {}
+    chunk_to_parent: dict[str, str] = {}
+    for c in chunks:
+        parent_id = c.get("parent_id", "")
+        chunk_id = c.get("chunk_id", "")
+        if parent_id:
+            if parent_id not in parent_chunks:
+                parent_chunks[parent_id] = []
+            parent_chunks[parent_id].append(c)
+            chunk_to_parent[chunk_id] = parent_id
+
+    # 按pos排序后合并每个父文档的所有子chunk文本
+    parent_text_by_id: dict[str, str] = {}
+    for parent_id, children in parent_chunks.items():
+        children_sorted = sorted(children, key=lambda x: int(x.get("pos", 0)))
+        merged_text = "\n".join([child.get("text", "") for child in children_sorted])
+        parent_text_by_id[parent_id] = merged_text
+
+    return BM25Index(
+        file_hash=file_hash,
+        bm25=bm25,
+        chunks=chunks,
+        chunk_text_by_id=chunk_text_by_id,
+        parent_text_by_id=parent_text_by_id,
+        chunk_to_parent=chunk_to_parent,
+        chunks_by_pos=chunks_by_pos,
+    )
 
