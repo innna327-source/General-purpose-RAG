@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyd
+.venv/
+venv/
+.env
+
+# PDF documents (put your files in data/raw_pdf/ but don't commit them)
+data/raw_pdf/*.pdf
+!data/raw_pdf/.gitkeep
+
+# Runtime-generated index & graph files
+index/*.faiss
+index/*.bm25.pkl
+index/*.chunks.jsonl
+graph/*_semantic_graph.json
+
+# Hash database (auto-rebuilt on first run)
+data/hash_db.json
+
+# Logs
+logs/*.jsonl
+logs/*.log
+!logs/.gitkeep
+
+# Node / frontend
+node_modules/
+frontend/node_modules/
+frontend/dist/
+mcp-notion-server/node_modules/
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Misc
+tmp_*.md
