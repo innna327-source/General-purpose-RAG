@@ -8,6 +8,7 @@ venv/
 
 # PDF documents (put your files in data/raw_pdf/ but don't commit them)
 data/raw_pdf/*.pdf
+*.pdf
 !data/raw_pdf/.gitkeep
 
 # Runtime-generated index & graph files
@@ -40,3 +41,12 @@ Thumbs.db
 
 # Misc
 tmp_*.md
+
+# Public-release safety
+.env.*
+!.env.example
+models/
+data/processed/
+data/version_log.json
+output/*
+!output/.gitkeep

@@ -180,15 +180,15 @@ card(ax, RX, 14.7, W, H, "子块命中 → 返回父块", "保语义完整性，
 arr(ax, RX, 15.9 - H/2, RX, 14.7 + H/2)
 
 # LLM
-card(ax, RX, 13.2, W, H, "llm.py  ·  LLM", "构造 Prompt → 调用大模型", C_LLM, TEXT_DARK)
+card(ax, RX, 13.2, W, H, "llm.py  ·  GLM-4", "构造 Prompt → 调用大模型", C_LLM, TEXT_DARK)
 arr(ax, RX, 14.7 - H/2, RX, 13.2 + H/2)
 
 # 输出
 card(ax, RX, 11.8, W, H, "✅  最终回答", "自然语言，有据可查", C_OUTPUT, TEXT_DARK)
 arr(ax, RX, 13.2 - H/2, RX, 11.8 + H/2)
 
-# 返回前端
-card(ax, RX, 10.6, W, H, "server.py (FastAPI)  /  Streamlit", "返回前端展示", C_STORAGE, TEXT_DARK)
+# 返回接口 / 可视化
+card(ax, RX, 10.6, W, H, "MCP HTTP接口  /  Streamlit", "外部调用或白盒展示", C_STORAGE, TEXT_DARK)
 arr(ax, RX, 11.8 - H/2, RX, 10.6 + H/2)
 
 # ══════════════════════════════════════════════════════

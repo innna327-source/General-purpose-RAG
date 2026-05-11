@@ -24,7 +24,6 @@ _DEFAULT_TITLE_PATTERNS: List[re.Pattern] = [
 # 简历、论文等依靠字号而非文字标记层级的文档，正则通常只切出 2-5 个块，设为 8 可确保降级
 _MIN_PARENTS_REGEX = 2
 
-
 def _tokenize_ids(tokenizer, text: str) -> List[int]:
     return tokenizer.encode(text, add_special_tokens=False)
 
@@ -67,6 +66,7 @@ class HierarchicalChunker(BaseChunker):
         title_patterns: Optional[List[re.Pattern]] = None,
         embedding_model_name: Optional[str] = None,
         semantic_threshold: Optional[float] = None,
+        min_parent_count: Optional[int] = None,
     ) -> None:
         self.tokenizer_model_name = tokenizer_model_name
         self.chunk_size = chunk_size
@@ -74,6 +74,7 @@ class HierarchicalChunker(BaseChunker):
         self.title_patterns = title_patterns if title_patterns is not None else _DEFAULT_TITLE_PATTERNS
         self.embedding_model_name = embedding_model_name or tokenizer_model_name
         self.semantic_threshold = semantic_threshold
+        self.min_parent_count = min_parent_count
         self._embedder = None
 
     # ------------------------------------------------------------------
@@ -84,11 +85,20 @@ class HierarchicalChunker(BaseChunker):
         # 先尝试正则切父块
         parents = self._split_to_parents_regex(paragraphs)
         split_method = "regex"
+        resolved_min_parent_count = self.min_parent_count
 
-        # 正则切出的父块太少，降级为语义边界检测
-        if len(parents) < _MIN_PARENTS_REGEX:
+        # min_parent_count=None 时，使用真正的数据自适应触发：
+        # 语义切分内部用“相邻段落相似度均值 - 0.5×标准差”找主题边界。
+        # 如果它识别出的主题边界多于标题正则，说明正则父块偏粗，采用语义父块。
+        if resolved_min_parent_count is None:
+            semantic_parents = self._split_to_parents_semantic(paragraphs)
+            semantic_parent_count = len(semantic_parents)
+            if semantic_parent_count > len(parents):
+                parents = semantic_parents
+                split_method = "semantic_adaptive"
+        elif len(parents) < max(1, int(resolved_min_parent_count)):
             parents = self._split_to_parents_semantic(paragraphs)
-            split_method = "semantic"
+            split_method = "semantic_fixed_min"
 
         tokenizer, used_fallback = self._load_tokenizer()
         chunks, parent_child_map = self._slide_window(parents, tokenizer, used_fallback)
@@ -121,6 +131,7 @@ class HierarchicalChunker(BaseChunker):
             "orphans": orphans,
             "used_fallback_tokenizer": used_fallback,
             "parent_split_method": split_method,
+            "min_parent_count_setting": resolved_min_parent_count,
             "chunk_size_setting": self.chunk_size,
             "overlap_setting": self.overlap,
         }
@@ -248,6 +259,7 @@ class HierarchicalChunker(BaseChunker):
         used_fallback: bool,
     ) -> tuple[list[dict], dict[str, list[str]]]:
         step = max(1, self.chunk_size - self.overlap)
+        tokenizer_stride = min(max(0, self.overlap), max(0, self.chunk_size - 1))
         chunks: list[dict] = []
         parent_child_map: dict[str, list[str]] = {}
 
@@ -256,46 +268,44 @@ class HierarchicalChunker(BaseChunker):
             chunks.append({"chunk_id": chunk_id, "parent_id": parent_id, "text": chunk_text})
             parent_child_map.setdefault(parent_id, []).append(chunk_id)
 
+        def add_char_windows(parent_id: str, parent_text: str) -> None:
+            tokens = list(parent_text)
+            i = 0
+            while i < len(tokens):
+                chunk_text = "".join(tokens[i : i + self.chunk_size]).strip()
+                if chunk_text:
+                    add_chunk(parent_id, chunk_text)
+                i += step
+
         for parent_id, parent_text in parents:
             if not parent_text.strip():
                 continue
             if used_fallback or tokenizer is None:
-                tokens = list(parent_text)
-                i = 0
-                while i < len(tokens):
-                    chunk_text = "".join(tokens[i : i + self.chunk_size]).strip()
-                    if chunk_text:
-                        add_chunk(parent_id, chunk_text)
-                    i += step
+                add_char_windows(parent_id, parent_text)
             else:
-                # 使用 offset_mapping 直接切原始文本，避免 decode() 在中文字符间插入空格
+                # 让 tokenizer 按 max_length/stride 直接生成窗口，避免先处理超长父块触发长度警告。
                 try:
                     enc = tokenizer(
                         parent_text,
                         add_special_tokens=False,
+                        max_length=self.chunk_size,
+                        stride=tokenizer_stride,
+                        truncation=True,
+                        return_overflowing_tokens=True,
                         return_offsets_mapping=True,
-                        truncation=False,
                     )
-                    token_ids = enc["input_ids"]
-                    offsets = enc["offset_mapping"]
-                    i = 0
-                    while i < len(token_ids):
-                        end = min(i + self.chunk_size, len(token_ids))
-                        char_start = offsets[i][0]
-                        char_end = offsets[end - 1][1]
+                    for offsets in enc["offset_mapping"]:
+                        valid_offsets = [(s, e) for s, e in offsets if e > s]
+                        if not valid_offsets:
+                            continue
+                        char_start = valid_offsets[0][0]
+                        char_end = valid_offsets[-1][1]
                         chunk_text = parent_text[char_start:char_end].strip()
                         if chunk_text:
                             add_chunk(parent_id, chunk_text)
-                        i += step
                 except Exception:
                     # fast tokenizer 不可用时降级为字符切分
-                    tokens = list(parent_text)
-                    i = 0
-                    while i < len(tokens):
-                        chunk_text = "".join(tokens[i : i + self.chunk_size]).strip()
-                        if chunk_text:
-                            add_chunk(parent_id, chunk_text)
-                        i += step
+                    add_char_windows(parent_id, parent_text)
 
         return chunks, parent_child_map
 
@@ -312,6 +322,7 @@ def build_hierarchical_chunks(
     title_patterns: Optional[List[re.Pattern]] = None,
     embedding_model_name: Optional[str] = None,
     semantic_threshold: Optional[float] = None,
+    min_parent_count: Optional[int] = None,
 ) -> ChunkResult:
     chunker = HierarchicalChunker(
         tokenizer_model_name=tokenizer_model_name,
@@ -320,5 +331,6 @@ def build_hierarchical_chunks(
         title_patterns=title_patterns,
         embedding_model_name=embedding_model_name,
         semantic_threshold=semantic_threshold,
+        min_parent_count=min_parent_count,
     )
     return chunker.chunk(paragraphs)
