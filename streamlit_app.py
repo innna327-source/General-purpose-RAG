@@ -57,10 +57,87 @@ def load_test_queries():
     # 否则使用统一的加载工具
     return _load_queries(Path("tests/test_queries.json"))
 
+@st.cache_data
+def load_hash_db():
+    hash_db_path = Path("data/hash_db.json")
+    if not hash_db_path.exists():
+        return {}
+    with open(hash_db_path, "r", encoding="utf-8") as f:
+        return json.load(f) or {}
+
+def get_active_file_hash():
+    hash_db = load_hash_db()
+    if not hash_db:
+        return None
+    return next(iter(hash_db.keys()))
+
+@st.cache_data
+def load_graph_data(file_hash):
+    if not file_hash:
+        return {}
+    graph_file = Path("graph") / f"{file_hash}_semantic_graph.json"
+    if not graph_file.exists():
+        return {}
+    with open(graph_file, "r", encoding="utf-8") as f:
+        return json.load(f) or {}
+
+def build_graph_indexes(graph_data):
+    nodes = graph_data.get("nodes", [])
+    id_to_node = {}
+    label_to_id = {}
+    for node in nodes:
+        if isinstance(node, dict):
+            node_id = node.get("id", "")
+            label = node.get("label", "")
+            if node_id:
+                id_to_node[node_id] = node
+            if label:
+                label_to_id[label] = node_id
+        elif isinstance(node, str):
+            id_to_node[node] = {"id": node, "label": node, "type": "CONCEPT"}
+            label_to_id[node] = node
+    return id_to_node, label_to_id
+
+def graph_labels_for_chunk(chunk_id, graph_data, id_to_node, limit=8):
+    labels = []
+    for entity_id, chunk_ids in graph_data.get("entity_chunks", {}).items():
+        if chunk_id in chunk_ids:
+            label = id_to_node.get(entity_id, {}).get("label", entity_id)
+            labels.append(label)
+        if len(labels) >= limit:
+            break
+    return labels
+
+def matched_graph_entities(query, graph_data, label_to_id, limit=12):
+    matches = []
+    for label, entity_id in label_to_id.items():
+        if label and len(label) >= 2 and label in query:
+            matches.append((label, entity_id))
+    return matches[:limit]
+
+def graph_neighbor_rows(matched_entities, graph_data, id_to_node, limit=12):
+    matched_ids = {entity_id for _, entity_id in matched_entities}
+    rows = []
+    for edge in graph_data.get("edges", []):
+        source = edge.get("from", "")
+        target = edge.get("to", "")
+        if source not in matched_ids and target not in matched_ids:
+            continue
+        rows.append({
+            "Source": id_to_node.get(source, {}).get("label", source),
+            "Relation": edge.get("relation", ""),
+            "Target": id_to_node.get(target, {}).get("label", target),
+            "Weight": edge.get("weight", 0),
+        })
+    return sorted(rows, key=lambda row: row["Weight"], reverse=True)[:limit]
+
 # 加载数据
 chunks_data = load_chunks_data()
 test_report = load_test_report()
 test_queries = load_test_queries()
+active_file_hash = get_active_file_hash()
+graph_data = load_graph_data(active_file_hash)
+graph_id_to_node, graph_label_to_id = build_graph_indexes(graph_data)
 
 # ==================== 1. 数据处理大盘 ====================
 st.header("📦 数据处理大盘 (Data Processing Dashboard)")
@@ -102,7 +179,47 @@ else:
 
 st.markdown("---")
 
-# ==================== 2. 检索质量跑分看板 ====================
+# ==================== 2. 知识图谱增强概览 ====================
+st.header("知识图谱增强概览 (Knowledge Graph)")
+st.markdown("**展示内容：** 文档实体、实体关系、实体到 chunk 的映射，以及图谱是否可用于检索增强。")
+
+if graph_data:
+    graph_nodes = graph_data.get("nodes", [])
+    graph_edges = graph_data.get("edges", [])
+    entity_chunks = graph_data.get("entity_chunks", {})
+    linked_chunk_count = len({cid for chunk_ids in entity_chunks.values() for cid in chunk_ids})
+
+    col_g1, col_g2, col_g3, col_g4 = st.columns(4)
+    with col_g1:
+        st.metric("实体节点数", len(graph_nodes))
+    with col_g2:
+        st.metric("关系边数", len(graph_edges))
+    with col_g3:
+        st.metric("实体-片段映射", len(entity_chunks))
+    with col_g4:
+        st.metric("覆盖 chunk 数", linked_chunk_count)
+
+    top_edges = sorted(graph_edges, key=lambda edge: edge.get("weight", 0), reverse=True)[:12]
+    if top_edges:
+        edge_rows = []
+        for edge in top_edges:
+            source = edge.get("from", "")
+            target = edge.get("to", "")
+            edge_rows.append({
+                "Source": graph_id_to_node.get(source, {}).get("label", source),
+                "Relation": edge.get("relation", ""),
+                "Target": graph_id_to_node.get(target, {}).get("label", target),
+                "Weight": edge.get("weight", 0),
+            })
+        st.dataframe(pd.DataFrame(edge_rows), use_container_width=True, height=280)
+    else:
+        st.info("当前图谱已有实体映射，但关系边为空；检索时仍可通过 entity_chunks 做实体直达召回。")
+else:
+    st.warning("未找到语义图谱文件，请先构建索引生成 graph/*_semantic_graph.json。")
+
+st.markdown("---")
+
+# ==================== 3. 检索质量跑分看板 ====================
 st.header("🎯 检索评估 vs 答案评估")
 st.markdown("**核心概念：** 检索分数高 ≠ 文档有答案")
 st.info("""
@@ -333,6 +450,13 @@ if test_report and test_queries:
                 display_text = r['text'][:60] + '...' if len(r['text']) > 60 else r['text']
                 fusion_rank = fusion_rank_map.get(r['chunk_id'], idx)
                 rank_delta = fusion_rank - idx
+                graph_lift = float(d.get('final_score', 0.0)) - float(d.get('base_score', 0.0))
+                graph_entities = graph_labels_for_chunk(
+                    r['chunk_id'],
+                    graph_data,
+                    graph_id_to_node,
+                    limit=5,
+                )
 
                 real_results.append({
                     'Rerank Used': r.get('rerank_used', False),
@@ -344,6 +468,9 @@ if test_report and test_queries:
                     '向量原始分': round(r['vector_score'], 4),
                     'BM25归一化分': round(d['norm_bm25'], 4),
                     '向量归一化分': round(d['norm_vector'], 4),
+                    '图谱命中': 'Yes' if d.get('graph_boost', False) else 'No',
+                    '图谱加权增量': round(graph_lift, 4),
+                    '命中实体': ', '.join(graph_entities),
                     '最终排序分（含图谱加权）': round(r['final_score'], 4)
                 })
             
@@ -356,6 +483,49 @@ if test_report and test_queries:
             
             styled_df = results_df.style.apply(highlight_max, subset=['BM25原始分', '向量原始分', 'BM25归一化分', '向量归一化分', '最终排序分（含图谱加权）'])
             st.dataframe(styled_df, use_container_width=True, height=250)
+
+            # ==================== Knowledge Graph Retrieval Trace ====================
+            st.subheader("知识图谱增强链路")
+            matched_entities = matched_graph_entities(selected_query, graph_data, graph_label_to_id)
+            graph_debug_rows = []
+            for d in debug_info:
+                if not d.get('graph_boost', False):
+                    continue
+                graph_entities = graph_labels_for_chunk(
+                    d['chunk_id'],
+                    graph_data,
+                    graph_id_to_node,
+                    limit=5,
+                )
+                graph_debug_rows.append({
+                    'Chunk ID': d['chunk_id'],
+                    'Base Score': round(float(d.get('base_score', 0.0)), 4),
+                    'Graph Lift': round(float(d.get('final_score', 0.0)) - float(d.get('base_score', 0.0)), 4),
+                    'Final Score': round(float(d.get('final_score', 0.0)), 4),
+                    'Entities': ', '.join(graph_entities),
+                })
+
+            col_gt1, col_gt2, col_gt3 = st.columns(3)
+            with col_gt1:
+                st.metric("查询命中实体", len(matched_entities))
+            with col_gt2:
+                st.metric("图谱增强候选", len(graph_debug_rows))
+            with col_gt3:
+                st.metric("图谱状态", "Fallback" if any(d.get('graph_fallback_used') for d in debug_info) else "Active")
+
+            if matched_entities:
+                st.write("查询中的图谱实体：" + "、".join(label for label, _ in matched_entities))
+                neighbor_rows = graph_neighbor_rows(matched_entities, graph_data, graph_id_to_node)
+                if neighbor_rows:
+                    st.dataframe(pd.DataFrame(neighbor_rows), use_container_width=True, height=220)
+            else:
+                st.info("当前查询没有直接命中文档图谱实体，因此本次主要依赖 BM25/向量检索；换一个包含文档实体的查询可观察图谱增强。")
+
+            if graph_debug_rows:
+                graph_debug_df = pd.DataFrame(graph_debug_rows).sort_values("Final Score", ascending=False)
+                st.dataframe(graph_debug_df, use_container_width=True, height=260)
+            else:
+                st.info("本次 Top 候选没有触发图谱加权。")
 
             # ==================== LLM 生成答案 + 答案验证 ====================
             st.markdown("---")
@@ -396,13 +566,16 @@ if test_report and test_queries:
 
                     # 判断LLM是否正确处理
                     is_no_answer_response = any(phrase in answer for phrase in NO_ANSWER_PHRASES)
+                    is_missing_llm_config = "未配置 SILICONFLOW_API_KEY" in answer
 
                     st.markdown("**🤖 LLM 回答：**")
-                    st.info(answer)
+                    st.markdown(answer.replace("\n", "  \n"))
 
                     # 答案验证
                     st.markdown("**✅ 答案验证：**")
-                    if has_answer_in_doc is True:
+                    if is_missing_llm_config:
+                        st.warning("⚠️ 未配置 API Key，当前只完成检索，未进行答案生成，跳过答案行为验证。")
+                    elif has_answer_in_doc is True:
                         if is_no_answer_response:
                             if use_parent:
                                 st.error("❌ **LLM行为错误** - 已使用窗口扩展（前后各2个chunk），但LLM仍拒绝回答")
@@ -432,7 +605,11 @@ if test_report and test_queries:
             comparison_data = {
                 'Chunk': [f"Top {i+1} ({d['chunk_id'][:8]}...)" for i, d in enumerate(top_debug_info)],
                 'BM25分数': [round(d['norm_bm25'], 4) for d in top_debug_info],
-                '向量分数': [round(d['norm_vector'], 4) for d in top_debug_info]
+                '向量分数': [round(d['norm_vector'], 4) for d in top_debug_info],
+                '图谱加权增量': [
+                    round(float(d.get('final_score', 0.0)) - float(d.get('base_score', 0.0)), 4)
+                    for d in top_debug_info
+                ]
             }
             
             df_comparison = pd.DataFrame(comparison_data)
@@ -444,7 +621,9 @@ if test_report and test_queries:
         go.Bar(name='BM25分数', x=df_comparison['Chunk'], y=df_comparison['BM25分数'], 
                marker_color='#FF6B6B', text=df_comparison['BM25分数'], textposition='auto'),
         go.Bar(name='向量分数', x=df_comparison['Chunk'], y=df_comparison['向量分数'], 
-               marker_color='#4ECDC4', text=df_comparison['向量分数'], textposition='auto')
+               marker_color='#4ECDC4', text=df_comparison['向量分数'], textposition='auto'),
+        go.Bar(name='图谱加权增量', x=df_comparison['Chunk'], y=df_comparison['图谱加权增量'],
+               marker_color='#9B5DE5', text=df_comparison['图谱加权增量'], textposition='auto')
     ])
     
     fig.update_layout(
@@ -464,7 +643,9 @@ if test_report and test_queries:
         go.Bar(name='BM25分数', x=df_comparison['Chunk'], y=df_comparison['BM25分数'], 
                marker_color='#FF6B6B'),
         go.Bar(name='向量分数', x=df_comparison['Chunk'], y=df_comparison['向量分数'], 
-               marker_color='#4ECDC4')
+               marker_color='#4ECDC4'),
+        go.Bar(name='图谱加权增量', x=df_comparison['Chunk'], y=df_comparison['图谱加权增量'],
+               marker_color='#9B5DE5')
     ])
     
     fig_stacked.update_layout(
@@ -491,6 +672,7 @@ st.info("""
 - ✅ 实时展示文档处理统计
 - ✅ 检索质量评估指标
 - ✅ 召回链路透明化展示
+- ✅ 知识图谱实体、关系与图谱加权贡献展示
 - ✅ 多维度分数对比可视化
 """)
 
