@@ -48,6 +48,7 @@ class GenerationEvaluator:
         context_text: str,
         has_answer_in_doc: bool = None,
         answer_key_points: list[str] = None,
+        retrieval_results: Optional[list[dict]] = None,
     ) -> dict:
         """
         评估单个查询的生成效果
@@ -73,6 +74,7 @@ class GenerationEvaluator:
             model=self.model,
             api_key=self.api_key,
             base_url=self.base_url,
+            retrieval_results=retrieval_results,
         )
 
         is_no_answer = self._detect_no_answer(answer)
@@ -148,6 +150,7 @@ class GenerationEvaluator:
                 context_text=context_text,
                 has_answer_in_doc=has_answer_in_doc,
                 answer_key_points=answer_key_points,
+                retrieval_results=results,
             )
 
             if result["is_no_answer_response"]:

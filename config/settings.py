@@ -87,6 +87,17 @@ class Settings:
     enable_answerability_gate: bool = True
     answerability_min_query_coverage: float = 0.30
     answerability_min_answer_coverage: float = 0.50
+    answerability_min_context_chars: int = 80
+    answerability_min_retrieval_confidence: float = 0.35
+    answerability_min_top1_rerank_score: float = -3.0
+    answerability_min_top1_final_score: float = 0.05
+    answerability_max_related_context_ratio: float = 0.80
+    enable_direct_evidence_answerability_gate: bool = True
+    answerability_min_direct_sentence_coverage: float = 0.35
+    answerability_min_direct_term_hits: int = 2
+    answerability_direct_window_chars: int = 420
+    answerability_uncertain_normal_policy: str = "warn"  # warn / reject
+    enable_high_risk_llm_judge: bool = False
 
     # Paths (relative to project root)
     root: Path = field(default_factory=project_root)

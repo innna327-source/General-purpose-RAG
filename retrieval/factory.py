@@ -25,6 +25,7 @@ def load_retriever(file_hash: str) -> HybridRetriever:
         bm25=bm25_index,
         vector=vector_index,
         graph_path=graph_path,
+        source_file=file_hash,
         synonym_dict=SETTINGS.synonym_dict or {},
         bm25_weight=SETTINGS.bm25_weight,
         vector_weight=SETTINGS.vector_weight,

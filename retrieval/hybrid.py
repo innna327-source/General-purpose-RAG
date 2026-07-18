@@ -165,6 +165,15 @@ def _rank_chunk_ids(chunk_ids: List[str], chunk_pos: Optional[Dict[str, int]] = 
     return sorted(deduped, key=lambda cid: (chunk_pos.get(cid, 10**9), cid))
 
 
+def _evidence_type(row: dict) -> str:
+    has_direct_score = float(row.get("bm25_score", 0.0)) > 0 or float(row.get("vector_score", 0.0)) > 0
+    if has_direct_score:
+        return "direct"
+    if row.get("graph_boost", False):
+        return "related_context"
+    return "weak"
+
+
 def _apply_graph_recall_limits(
     chunks_by_entity: List[List[str]],
     chunk_to_parent: Optional[Dict[str, str]] = None,
@@ -413,6 +422,7 @@ class HybridRetriever:
     bm25: BM25Index
     vector: VectorStore
     graph_path: Path
+    source_file: str = ""
     synonym_dict: Dict[str, List[str]] = field(default_factory=dict)
     bm25_weight: float = 0.7
     vector_weight: float = 0.3
@@ -549,6 +559,9 @@ class HybridRetriever:
 
             row = {
                 "chunk_id": c["chunk_id"],
+                "file_hash": self.file_hash,
+                "source_file": self.source_file or self.file_hash,
+                "parent_id": self.bm25.chunk_to_parent.get(c["chunk_id"], ""),
                 "bm25_score": float(c["bm25_score"]),
                 "vector_score": float(c["vector_score"]),
                 "norm_bm25": float(nb),
@@ -558,9 +571,16 @@ class HybridRetriever:
                 "graph_boost": c.get("graph_boost", False),
                 "graph_fallback_used": bool(graph_fallback_used),
             }
+            row["evidence_type"] = _evidence_type(row)
             debug_data.append(row)
             c["base_score"] = float(base_score)
             c["final_score"] = float(final)
+            c["graph_boost"] = c.get("graph_boost", False)
+            c["graph_fallback_used"] = bool(graph_fallback_used)
+            c["evidence_type"] = row["evidence_type"]
+            c["file_hash"] = self.file_hash
+            c["source_file"] = self.source_file or self.file_hash
+            c["parent_id"] = self.bm25.chunk_to_parent.get(c["chunk_id"], "")
 
         # 根据融合分数排序，取前 N 个候选用于重排
         sorted_candidates = sorted(candidates, key=lambda x: float(x.get("final_score", 0.0)), reverse=True)
@@ -590,6 +610,9 @@ class HybridRetriever:
 
                 expanded_results.append({
                     "chunk_id": chunk_id,
+                    "file_hash": r.get("file_hash", self.file_hash),
+                    "source_file": r.get("source_file", self.source_file or self.file_hash),
+                    "parent_id": r.get("parent_id", self.bm25.chunk_to_parent.get(chunk_id, "")),
                     "text": expanded_text,  # 扩展后的文本
                     "chunk_text": chunk_text,  # 原始chunk（用于对比）
                     "bm25_score": float(r["bm25_score"]),
@@ -598,12 +621,18 @@ class HybridRetriever:
                     "final_score": float(r["final_score"]),
                     "rerank_score": float(r.get("rerank_score", 0.0)),
                     "rerank_used": r.get("rerank_used", False),
+                    "graph_boost": r.get("graph_boost", False),
+                    "graph_fallback_used": r.get("graph_fallback_used", False),
+                    "evidence_type": r.get("evidence_type", "weak"),
                 })
             results_out = expanded_results
         else:
             results_out = [
                 {
                     "chunk_id": r["chunk_id"],
+                    "file_hash": r.get("file_hash", self.file_hash),
+                    "source_file": r.get("source_file", self.source_file or self.file_hash),
+                    "parent_id": r.get("parent_id", self.bm25.chunk_to_parent.get(r["chunk_id"], "")),
                     "text": r["text"],
                     "bm25_score": float(r["bm25_score"]),
                     "vector_score": float(r["vector_score"]),
@@ -611,6 +640,9 @@ class HybridRetriever:
                     "final_score": float(r["final_score"]),
                     "rerank_score": float(r.get("rerank_score", 0.0)),
                     "rerank_used": r.get("rerank_used", False),
+                    "graph_boost": r.get("graph_boost", False),
+                    "graph_fallback_used": r.get("graph_fallback_used", False),
+                    "evidence_type": r.get("evidence_type", "weak"),
                 }
                 for r in results
             ]

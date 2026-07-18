@@ -46,6 +46,7 @@ class MCPHandler:
                 model=SETTINGS.generation_llm_model,
                 api_key=SETTINGS.llm_api_key or None,
                 base_url=SETTINGS.llm_base_url or None,
+                retrieval_results=results,
             )
             resp = build_completion_response(self.service_name, text=answer, context_ids=context_ids, request_model=req.model)
             latency_ms = (time.time() - t0) * 1000

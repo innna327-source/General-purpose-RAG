@@ -377,7 +377,7 @@ def get_retriever():
     return load_retriever(file_hash)
 
 @st.cache_data(show_spinner=False)
-def cached_llm_answer(query: str, context_text: str, use_parent: bool) -> str:
+def cached_llm_answer(query: str, context_text: str, use_parent: bool, retrieval_results: list[dict]) -> str:
     """调用 LLM 生成答案，按 query + context + mode 缓存，避免重复请求"""
     from generation.llm import generate_answer
     from config.settings import SETTINGS
@@ -387,6 +387,7 @@ def cached_llm_answer(query: str, context_text: str, use_parent: bool) -> str:
         model=SETTINGS.generation_llm_model,
         api_key=SETTINGS.llm_api_key or None,
         base_url=SETTINGS.llm_base_url or None,
+        retrieval_results=retrieval_results,
     )
 
 if test_report and test_queries:
@@ -562,7 +563,7 @@ if test_report and test_queries:
 
             with st.spinner("正在调用 LLM 生成答案…"):
                 try:
-                    answer = cached_llm_answer(selected_query, context_text, use_parent)
+                    answer = cached_llm_answer(selected_query, context_text, use_parent, results)
 
                     # 判断LLM是否正确处理
                     is_no_answer_response = any(phrase in answer for phrase in NO_ANSWER_PHRASES)

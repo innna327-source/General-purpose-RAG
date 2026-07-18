@@ -13,6 +13,7 @@
 - 图谱增强：用 spaCy 与 LLM 抽取实体关系，支持 JSON 图谱和可选 Neo4j 存储。
 - 重排优化：可选 Cross-Encoder rerank，默认模型为 `BAAI/bge-reranker-v2-m3`。
 - 生成控制：OpenAI-compatible API，内置“仅基于上下文回答”的防幻觉约束。
+- Answerability Gate：生成前检查召回证据是否足够、分数是否可信、是否存在 direct evidence；生成后回查答案 claim 是否被上下文支持。
 - 白盒看板：Streamlit 展示分块统计、检索分数、召回链路、生成结果和评估指标。
 - MCP HTTP 服务：提供 `POST /v1/completions`，方便接入 Agent 或其他客户端。
 
@@ -25,7 +26,7 @@ PDF
   -> chunk/              hierarchical parent chunks + sliding child chunks
   -> graph/              entity graph extraction, JSON or optional Neo4j
   -> retrieval/          BM25 + FAISS + graph recall + rerank
-  -> generation/         OpenAI-compatible LLM answer generation
+  -> generation/         OpenAI-compatible LLM answer generation + answerability gate
   -> evaluation/         retrieval and generation evaluation reports
   -> streamlit_app.py    white-box dashboard
   -> mcp/                HTTP completion service
@@ -142,6 +143,33 @@ http://localhost:8501
 ```
 
 看板会展示分块统计、测试报告、Top-K 召回结果、BM25/向量/融合分数、rerank 状态和 LLM 生成答案。
+
+## Answerability Gate
+
+项目在 LLM 生成前后增加了轻量规则 gate，用来降低“召回结果看起来相关，但其实证据不足仍然硬答”的风险。
+
+当前实现分为四层：
+
+1. Retrieval Sufficiency Gate：判断有没有基本证据。检查 TopK 是否为空、上下文长度是否过短、query 关键词覆盖率是否低、是否只有 related_context 而没有 direct evidence。不满足时直接返回“根据现有资料无法回答该问题”。
+
+2. Retrieval Confidence Gate：判断证据是否可靠。综合 `rerank_score`、`final_score`、Top1/Top2 分差、direct evidence 占比、related_context 占比、来源/父块集中度，生成 `retrieval_confidence`。置信度过低时拒答。
+
+3. Direct Evidence Gate：判断召回片段是否覆盖问题里的关键对象和关键维度。比如比较类问题会检查两个比较对象是否同时出现在直接证据窗口里；成本、风险、指标、年份等关键维度缺失时，普通问答默认继续生成但加提示。
+
+4. Answer Support Gate：生成后检查答案是否越界。基础版本做答案关键词覆盖率检查；金融/高风险场景会进一步抽取公司名、指标、年份、金额、百分比和风险项，回查这些 claim 是否出现在召回上下文中。
+
+普通问答默认策略是 `warn`：当召回内容与问题主题相关但关键维度不完整时，允许生成，但会在答案前提示“仅基于现有片段，可能不完整”。高风险场景可以通过 `high_risk=True` 或配置切到更严格策略，证据不完整时直接拒答。`enable_high_risk_llm_judge` 目前保留为报告生成等高价值输出的兜底开关，默认不走 LLM judge，避免把所有请求都变成高成本路径。
+
+主要配置项在 `config/settings.py`：
+
+```python
+enable_answerability_gate = True
+answerability_min_context_chars = 80
+answerability_min_retrieval_confidence = 0.35
+enable_direct_evidence_answerability_gate = True
+answerability_uncertain_normal_policy = "warn"  # warn / reject
+enable_high_risk_llm_judge = False
+```
 
 ## MCP HTTP 服务
 
