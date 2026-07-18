@@ -29,7 +29,8 @@ logs/*.log
 node_modules/
 frontend/node_modules/
 frontend/dist/
-mcp-notion-server/node_modules/
+mcp-notion-server/
+/package-lock.json
 
 # IDE
 .idea/
